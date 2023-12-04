@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from sqlalchemy.orm import relationship
+
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -12,13 +12,13 @@ class Post(db.Model):
     post_name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     views = db.Column(db.Integer, default=0)
-    comment_count = db.Column(db.Integer, default=0)
+    # comment_count = db.Column(db.Integer, default=0)
     upload_date = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(255), nullable=False)
     preview = db.Column(db.Boolean, default=False)
 
-    user = relationship('User', back_populates='posts')
-    comments = relationship('Comment', back_populates='post')
+    user = db.relationship('User', back_populates='posts')
+    comments = db.relationship('Comment', back_populates='post', cascade="all, delete")
 
     def to_dict(self):
         return {
@@ -27,7 +27,7 @@ class Post(db.Model):
             'post_name': self.post_name,
             'description': self.description,
             'views': self.views,
-            'comment_count': self.comment_count,
+            'comment_count': len(self.comments),
             'upload_date': self.upload_date,
             'url': self.url,
             'preview': self.preview
