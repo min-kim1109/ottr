@@ -6,7 +6,7 @@ def seed_posts():
     demo = User.query.filter_by(username='Demo').first()
 
     demo_post = Post(
-        user=demo,
+        user_id=1,
         post_name='Demo Post',
         description='This is a demo post.',
         views=1234,

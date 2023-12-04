@@ -10,18 +10,20 @@ const ShowAllPosts = () => {
         dispatch(fetchPosts());
     }, [dispatch]);
 
+    if (!posts) return null
 
     console.log('Fetched Posts:', posts);
 
     return (
-        <div>
-            {posts.map((post) => (
-                <div key={post.id}>
-                    <h3>{post.post_name}</h3>
-                    <p>{post.description}</p>
-                </div>
-            ))}
-        </div>
+        <></>
+        // <div>
+        //     {posts.map((post) => (
+        //         <div key={post.id}>
+        //             <h3>{post.post_name}</h3>
+        //             <p>{post.description}</p>
+        //         </div>
+        //     ))}
+        // </div>
     );
 };
 

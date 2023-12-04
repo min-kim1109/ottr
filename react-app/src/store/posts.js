@@ -1,37 +1,37 @@
+import { normalizeObj } from "./normalize"
+
 export const SET_POSTS = 'SET_POSTS';
 
 export const setPosts = (posts) => ({
     type: SET_POSTS,
-    payload: posts,
+    posts
 });
 
 export const fetchPosts = () => async (dispatch) => {
-    try {
-        const response = await fetch('/api/posts');
-        if (!response.ok) {
-            throw new Error('Failed to fetch posts');
-        }
-
-        const data = await response.json();
-
-        dispatch(setPosts(data.posts));
-    } catch (error) {
-        console.error('Error fetching posts:', error);
-
+    const res = await fetch('/api/posts')
+    if (res.ok) {
+        const { posts } = await res.json();
+        dispatch(setPosts(posts))
+        return posts
+    } else {
+        const data = await res.json();
+        console.log(data)
+        return data
     }
 };
 
 
-const initialState = {
-    posts: [],
-};
+const initialState = {}
+
 
 
 const postsReducer = (state = initialState, action) => {
+    let newState;
     switch (action.type) {
         case SET_POSTS:
-            return { ...state, posts: action.payload };
-
+            newState = { ...state }
+            newState.posts = normalizeObj(action.posts)
+            return newState
         default:
             return state;
     }
