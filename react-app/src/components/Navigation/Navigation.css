@@ -1,19 +1,24 @@
-.profile-dropdown {
-  position: absolute;
-}
-
-.hidden {
-  display: none;
-}
-
 .nav-container {
   display: flex;
   justify-content: space-between;
+  background: rgba(0, 0, 0, 0.3);
+  /* Change the alpha value (last parameter) for transparency */
+  padding: 5px 0px;
+  /* Adjusted padding */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  /* Added left: 0 to ensure the bar extends to the left edge */
+  z-index: 100;
 }
-
 
 .ottr-link {
   text-decoration: none;
   color: inherit;
   font-weight: bold;
+}
+
+.profile-button {
+  margin-right: 40px;
 }
