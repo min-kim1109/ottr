@@ -1,4 +1,4 @@
-import { normalizeObj } from "./normalize"
+
 
 export const SET_POSTS = 'SET_POSTS';
 
@@ -21,17 +21,17 @@ export const fetchPosts = () => async (dispatch) => {
 };
 
 
-const initialState = {}
-
-
+const initialState = {
+    posts: []
+};
 
 const postsReducer = (state = initialState, action) => {
-    let newState;
     switch (action.type) {
         case SET_POSTS:
-            newState = { ...state }
-            newState.posts = normalizeObj(action.posts)
-            return newState
+            return {
+                ...state,
+                posts: action.posts
+            };
         default:
             return state;
     }
