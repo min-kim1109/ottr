@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import ShowAllPosts from "./components/ShowAllPosts/ShowAllPosts";
+import SinglePost from "./components/SinglePost/SinglePost";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 
@@ -26,9 +27,12 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <Route path="/posts">
+          <Route path="/posts" exact>
             <ShowAllPosts />
           </Route>
+          <Route path="/post/:postId" component={SinglePost} />
+
+          <Redirect to="/posts" />
         </Switch>
       )}
     </>

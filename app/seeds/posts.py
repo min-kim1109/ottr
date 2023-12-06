@@ -17,7 +17,7 @@ def seed_posts():
     )
 
     marnie_post = Post(
-        user_id=1,
+        user_id=2,
         post_name='Marnie Post',
         description='This post belongs to Marnie.',
         views=1234,
@@ -28,7 +28,7 @@ def seed_posts():
     )
 
     bobbie_post = Post(
-        user_id=1,
+        user_id=3,
         post_name='Bobbie Post',
         description='This post belongs to Bobbie.',
         views=1234,
