@@ -1,5 +1,4 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from sqlalchemy.orm import relationship
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -17,8 +16,11 @@ class Post(db.Model):
     url = db.Column(db.String(255), nullable=False)
     preview = db.Column(db.Boolean, default=False)
 
-    user = relationship('User', back_populates='posts')
-    comments = relationship('Comment', back_populates='post')
+    # Add a new field for the image path or URL
+    image_url = db.Column(db.String(255))
+
+    user = db.relationship('User', back_populates='posts')
+    comments = db.relationship('Comment', back_populates='post', cascade="all, delete")
 
     def to_dict(self):
         return {
@@ -27,8 +29,9 @@ class Post(db.Model):
             'post_name': self.post_name,
             'description': self.description,
             'views': self.views,
-            'comment_count': self.comment_count,
+            'comment_count': len(self.comments),
             'upload_date': self.upload_date,
             'url': self.url,
-            'preview': self.preview
+            'preview': self.preview,
+            'image_url': self.image_url  # Include the image URL in the dictionary
         }
