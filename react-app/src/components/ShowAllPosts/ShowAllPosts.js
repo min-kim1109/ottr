@@ -16,14 +16,9 @@ const ShowAllPosts = () => {
     console.log('Fetched Posts:', posts);
 
     return (
-
-        <div>
+        <div className="main-image-container">
             {posts.map((post) => (
-                <div key={post.id}>
-                    <div className="main-image-container">
-                        {post.image_url && <img src={post.image_url} alt="Post Image" />}
-                    </div>
-                </div>
+                <img key={post.id} src={post.image_url} alt="Post Image" />
             ))}
         </div>
     );
