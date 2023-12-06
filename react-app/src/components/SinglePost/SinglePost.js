@@ -38,7 +38,7 @@ const SinglePost = () => {
     return (
         <div>
             <img src={singlePost.image_url} alt={`Post ${singlePost.id} Image`} />
-            {/* Add other details of the post as needed */}
+            <h2>{singlePost.post_name}</h2>
         </div>
     );
 };

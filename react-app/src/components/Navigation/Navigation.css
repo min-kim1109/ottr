@@ -5,3 +5,15 @@
 .hidden {
   display: none;
 }
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.ottr-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
