@@ -73,3 +73,45 @@ def create_post():
             return jsonify({"errors": errors}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@post_routes.route('/<int:post_id>/edit', methods=['PUT'])
+@login_required
+def update_post(post_id):
+    try:
+        if not current_user.is_authenticated:
+            return jsonify({"error": "Unauthorized"}), 401
+
+        # Fetch the existing post by its ID
+        post = Post.query.get(post_id)
+        if not post:
+            return jsonify({'error': 'Post not found'}), 404
+
+        # Parse JSON data from the request
+        data = request.get_json()
+
+        # Create a new form instance without passing data immediately
+        form = PostForm()
+
+        # Set CSRF token from the request's cookies
+        form['csrf_token'].data = request.cookies['csrf_token']
+
+        # Manually populate the form fields with the JSON data
+        form.post_name.data = data.get('post_name', post.post_name)
+        form.description.data = data.get('description', post.description)
+        form.image_url.data = data.get('image_url', post.image_url)
+
+        if form.validate():
+            # Update the post object
+            post.post_name = form.post_name.data
+            post.description = form.description.data
+            post.image_url = form.image_url.data
+            post.upload_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Update upload date if required
+
+            # Save the changes to the database
+            db.session.commit()
+            return jsonify({"post": post.to_dict()}), 200
+        else:
+            errors = form.errors
+            return jsonify({"errors": errors}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

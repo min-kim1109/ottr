@@ -1,9 +1,10 @@
-import Cookies from 'js-cookie';
+
 
 //action constant
 export const SET_POSTS = 'SET_POSTS';
 export const SET_SINGLE_POST = 'SET_SINGLE_POST';
 export const CREATE_POST = 'CREATE_POST';
+export const UPDATE_POST = 'UPDATE_POST';
 
 //action creators
 export const setPosts = (posts) => ({
@@ -20,6 +21,11 @@ export const createPost = (post) => ({
     type: CREATE_POST,
     post
 });
+
+export const updatePostAction = (post) => ({
+    type: UPDATE_POST,
+    post
+})
 
 
 //THUNKS
@@ -55,6 +61,7 @@ export const fetchSinglePost = (postId) => async (dispatch) => {
     }
 };
 
+// thunk to create a new post
 export const createNewPost = (post) => async (dispatch) => {
     const response = await fetch('/api/posts/new', {
         method: 'POST',
@@ -68,6 +75,27 @@ export const createNewPost = (post) => async (dispatch) => {
         const newPost = await response.json();
         dispatch(createPost(newPost));
         return newPost;
+    } else {
+        const error = await response.json();
+        console.log(error);
+        return error;
+    }
+};
+
+// thunk for updating a post
+export const updateExistingPost = (postId, updatedPostData) => async (dispatch) => {
+    const response = await fetch(`/api/posts/${postId}/edit`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedPostData)
+    });
+
+    if (response.ok) {
+        const updatedPost = await response.json();
+        dispatch(updatePostAction(updatedPost));
+        return updatedPost;
     } else {
         const error = await response.json();
         console.log(error);
@@ -97,6 +125,14 @@ const postsReducer = (state = initialState, action) => {
                 ...state,
                 posts: [...state.posts, action.post]
             };
+        case UPDATE_POST:
+            return {
+                ...state,
+                posts: state.posts.map(post =>
+                    post.id === action.post.id ? action.post : post),
+                singlePost: action.post
+            };
+
 
         default:
             return state;
