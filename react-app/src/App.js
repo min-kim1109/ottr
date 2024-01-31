@@ -5,6 +5,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import ShowAllPosts from "./components/ShowAllPosts/ShowAllPosts";
 import SinglePost from "./components/SinglePost/SinglePost";
+import CreatePost from "./components/CreatePost/CreatePost";
 import Homepage from "./components/Homepage/Homepage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
@@ -31,12 +32,17 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
+
           <Route path="/posts" exact>
             <ShowAllPosts />
           </Route>
           <Route path="/post/:postId" component={SinglePost} />
+          <Route path="/posts/new">
+            <CreatePost />
+          </Route>
 
           <Redirect to="/posts" />
+
         </Switch>
       )}
     </>

@@ -37,8 +37,9 @@ const SinglePost = () => {
 
     return (
         <div>
-            <img src={singlePost.image_url} alt={`Post ${singlePost.id} Image`} />
-            <h2>{singlePost.post_name}</h2>
+            <img src={singlePost.image_url} alt={`Post ${singlePost.id} Image`}></img>
+            <p>{singlePost.post_name}</p>
+            <p>{singlePost.description}</p>
         </div>
     );
 };

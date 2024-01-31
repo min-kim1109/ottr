@@ -4,8 +4,16 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
+function CreatePostLink() {
+	return (
+		<NavLink to="/posts/new" className="create-post-link">
+			Create Post
+		</NavLink>
+	);
+}
+
 function Navigation({ isLoaded }) {
-	const sessionUser = useSelector(state => state.session.user);
+	const sessionUser = useSelector((state) => state.session.user);
 
 	return (
 		<div className="nav-container">
@@ -15,8 +23,13 @@ function Navigation({ isLoaded }) {
 				</NavLink>
 			</div>
 			{isLoaded && (
-				<div className='profile-button'>
+				<div className="profile-button">
 					<ProfileButton user={sessionUser} />
+				</div>
+			)}
+			{isLoaded && sessionUser && (
+				<div className="create-post-button">
+					<CreatePostLink />
 				</div>
 			)}
 		</div>

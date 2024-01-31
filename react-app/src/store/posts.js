@@ -1,7 +1,9 @@
+import Cookies from 'js-cookie';
 
 //action constant
 export const SET_POSTS = 'SET_POSTS';
 export const SET_SINGLE_POST = 'SET_SINGLE_POST';
+export const CREATE_POST = 'CREATE_POST';
 
 //action creators
 export const setPosts = (posts) => ({
@@ -12,6 +14,11 @@ export const setPosts = (posts) => ({
 export const setSinglePost = (post) => ({
     type: SET_SINGLE_POST,
     post,
+});
+
+export const createPost = (post) => ({
+    type: CREATE_POST,
+    post
 });
 
 
@@ -48,6 +55,25 @@ export const fetchSinglePost = (postId) => async (dispatch) => {
     }
 };
 
+export const createNewPost = (post) => async (dispatch) => {
+    const response = await fetch('/api/posts/new', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
+    });
+
+    if (response.ok) {
+        const newPost = await response.json();
+        dispatch(createPost(newPost));
+        return newPost;
+    } else {
+        const error = await response.json();
+        console.log(error);
+        return error;
+    }
+};
 
 const initialState = {
     posts: [],
@@ -66,6 +92,12 @@ const postsReducer = (state = initialState, action) => {
                 ...state,
                 singlePost: action.post,
             };
+        case CREATE_POST:
+            return {
+                ...state,
+                posts: [...state.posts, action.post]
+            };
+
         default:
             return state;
     }
