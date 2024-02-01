@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@300&display=swap');
+
+.homepage-container {
+    display: flex;
+    justify-content: center;
+}
+
+.background-image-container {
+    background-image: url('https://i.imgur.com/GoAzjYf.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+
+}
+
+.content-container {
+    position: relative;
+    margin-top: 200px;
+    z-index: 1;
+    font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2 {
+    color: #fff;
+
+}
+
+
+button {
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+*/ .content1 {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.content2 {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.otter-button {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}

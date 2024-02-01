@@ -28,6 +28,7 @@ export const authenticate = () => async (dispatch) => {
 		dispatch(setUser(data));
 	}
 };
+
 export const login = (email, password) => async (dispatch) => {
 	const response = await fetch("/api/auth/login", {
 		method: "POST",
@@ -45,17 +46,19 @@ export const login = (email, password) => async (dispatch) => {
 		dispatch(setUser(data));
 		return null;
 	} else {
-		try {
+		// Check if the response is JSON
+		const contentType = response.headers.get("content-type");
+		if (contentType && contentType.indexOf("application/json") !== -1) {
 			const data = await response.json();
 			if (data.errors) {
 				return data.errors;
 			}
-		} catch (error) {
-			// Handle potential JSON parsing error
-			console.error('Error parsing JSON:', error);
+		} else {
+			// Handle non-JSON response (like HTML)
+			const text = await response.text();
+			console.error("Non-JSON response received:", text);
+			return ["An error occurred. Please try again."];
 		}
-
-		return ["An error occurred. Please try again."];
 	}
 };
 
@@ -88,17 +91,12 @@ export const signUp = (username, email, password) => async (dispatch) => {
 		const data = await response.json();
 		dispatch(setUser(data));
 		return null;
-	} else {
-		try {
-			const data = await response.json();
-			if (data.errors) {
-				return data.errors;
-			}
-		} catch (error) {
-			// Handle potential JSON parsing error
-			console.error('Error parsing JSON:', error);
+	} else if (response.status < 500) {
+		const data = await response.json();
+		if (data.errors) {
+			return data.errors;
 		}
-
+	} else {
 		return ["An error occurred. Please try again."];
 	}
 };

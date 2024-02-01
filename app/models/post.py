@@ -12,11 +12,9 @@ class Post(db.Model):
     description = db.Column(db.String(255), nullable=False)
     views = db.Column(db.Integer, default=0)
     comment_count = db.Column(db.Integer, default=0)
-    upload_date = db.Column(db.String(50), nullable=False)
-    url = db.Column(db.String(255), nullable=False)
+    upload_date = db.Column(db.String(50))  # Made nullable
+    url = db.Column(db.String(255))  # Made nullable
     preview = db.Column(db.Boolean, default=False)
-
-    # Add a new field for the image path or URL
     image_url = db.Column(db.String(255))
 
     user = db.relationship('User', back_populates='posts')
@@ -33,5 +31,5 @@ class Post(db.Model):
             'upload_date': self.upload_date,
             'url': self.url,
             'preview': self.preview,
-            'image_url': self.image_url  # Include the image URL in the dictionary
+            'image_url': self.image_url
         }

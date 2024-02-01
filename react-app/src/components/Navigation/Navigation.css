@@ -1,7 +1,20 @@
-.profile-dropdown {
-  position: absolute;
-}
+/* .nav-container {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.3);
 
-.hidden {
-  display: none;
+  padding: 5px 0px;
+
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  z-index: 100;
+} */
+
+.ottr-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
 }
