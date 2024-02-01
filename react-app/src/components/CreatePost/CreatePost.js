@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom'
 import { createNewPost } from '../../store/posts';
 
 const CreatePost = () => {
@@ -7,6 +8,7 @@ const CreatePost = () => {
     const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +18,7 @@ const CreatePost = () => {
             image_url: imageUrl,
         };
         await dispatch(createNewPost(newPost));
-        // Reset form or handle post creation success
+        history.push('/posts');
     };
 
     return (

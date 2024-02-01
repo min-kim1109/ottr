@@ -5,6 +5,7 @@ export const SET_POSTS = 'SET_POSTS';
 export const SET_SINGLE_POST = 'SET_SINGLE_POST';
 export const CREATE_POST = 'CREATE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
+export const DELETE_POST = 'DELETE_POST';
 
 //action creators
 export const setPosts = (posts) => ({
@@ -26,6 +27,11 @@ export const updatePostAction = (post) => ({
     type: UPDATE_POST,
     post
 })
+
+export const deletePostAction = (postId) => ({
+    type: DELETE_POST,
+    postId
+});
 
 
 //THUNKS
@@ -103,6 +109,22 @@ export const updateExistingPost = (postId, updatedPostData) => async (dispatch) 
     }
 };
 
+// thunk for deleting a post
+export const deletePost = (postId) => async (dispatch) => {
+    const response = await fetch(`/api/posts/${postId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        dispatch(deletePostAction(postId));
+        return postId;
+    } else {
+        const error = await response.json();
+        console.log(error);
+        return error;
+    }
+};
+
 const initialState = {
     posts: [],
     singlePost: null,
@@ -131,6 +153,13 @@ const postsReducer = (state = initialState, action) => {
                 posts: state.posts.map(post =>
                     post.id === action.post.id ? action.post : post),
                 singlePost: action.post
+            };
+
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post.id !== action.postId),
+                singlePost: state.singlePost && state.singlePost.id === action.postId ? null : state.singlePost
             };
 
 

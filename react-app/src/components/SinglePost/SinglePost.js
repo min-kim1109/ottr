@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { fetchPosts } from '../../store/posts';
+import { deletePost } from '../../store/posts';
+import DeleteConfirmationModal from '../DeletePostModal/DeletePostModal';
 
 const SinglePost = () => {
     const dispatch = useDispatch();
@@ -10,6 +12,7 @@ const SinglePost = () => {
     const posts = useSelector((state) => state.posts.posts);
     const sessionUser = useSelector((state) => state.session.user);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +42,21 @@ const SinglePost = () => {
         history.push(`/posts/${postId}/edit`);
     }
 
+    //! this will be the logic to open the delete confirmation modal
+    const handleDeleteClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        setIsModalOpen(false);
+        await dispatch(deletePost(singlePost.id));
+        history.push('/posts')
+    };
+
+    const handleModalCancel = () => {
+        setIsModalOpen(false);
+    };
+
     console.log('Fetched Single Post:', singlePost);
 
     return (
@@ -46,10 +64,20 @@ const SinglePost = () => {
             <img src={singlePost.image_url} alt={`Post ${singlePost.id} Image`}></img>
             <p>{singlePost.post_name}</p>
             <p>{singlePost.description}</p>
-            {/* Show Edit button only if the current user is the creator of the post */}
+
             {sessionUser && sessionUser.id === singlePost.user_id && (
                 <button onClick={handleEdit}>Edit Post</button>
             )}
+
+            {sessionUser && sessionUser.id === singlePost.user_id && (
+                <button onClick={handleDeleteClick}>Delete Post</button>
+            )}
+
+            <DeleteConfirmationModal
+                isOpen={isModalOpen}
+                onDeleteConfirm={handleDeleteConfirm}
+                onCancel={handleModalCancel}
+            />
         </div>
     );
 };
