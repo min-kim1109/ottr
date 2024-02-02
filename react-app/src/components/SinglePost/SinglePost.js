@@ -13,16 +13,26 @@ const SinglePost = () => {
     );
     const sessionUser = useSelector((state) => state.session.user);
     const [commentText, setCommentText] = useState('');
-    const [comments, setComments] = useState(post ? post.comments : []);
+    const [comments, setComments] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Fetch posts when the component mounts
     useEffect(() => {
-        if (!post) {
-            dispatch(fetchPosts());
-        } else {
-            setComments(post.comments);
+        dispatch(fetchPosts());
+    }, [dispatch]);
+
+    // Load comments from Local Storage when the component mounts or when the postId changes
+    useEffect(() => {
+        if (post) {
+            // Check if comments exist in Local Storage
+            const storedComments = localStorage.getItem(`comments_${postId}`);
+            if (storedComments) {
+                setComments(JSON.parse(storedComments));
+            } else {
+                setComments(post.comments);
+            }
         }
-    }, [dispatch, postId, post]);
+    }, [postId, post]);
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -31,7 +41,11 @@ const SinglePost = () => {
             const response = await dispatch(createNewComment(postId, commentData));
             if (response && !response.error) {
                 setCommentText('');
-                setComments([...comments, response]);
+
+                // Update comments state and store it in Local Storage
+                const newComments = [...comments, response];
+                setComments(newComments);
+                localStorage.setItem(`comments_${postId}`, JSON.stringify(newComments));
             } else {
                 console.error('Error creating comment:', response);
             }

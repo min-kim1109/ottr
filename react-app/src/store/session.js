@@ -14,18 +14,25 @@ const removeUser = () => ({
 const initialState = { user: null };
 
 export const authenticate = () => async (dispatch) => {
-	const response = await fetch("/api/auth/", {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	if (response.ok) {
-		const data = await response.json();
-		if (data.errors) {
-			return;
-		}
+	// Check if user data exists in Local Storage
+	const user_name = localStorage.getItem('user_name');
+	if (user_name) {
+		// Dispatch SET_USER with the stored user data
+		dispatch(setUser({ user_name }));
+	} else {
+		// Perform regular authentication request
+		const response = await fetch("/api/auth/", {
+			// ... (existing code)
+		});
 
-		dispatch(setUser(data));
+		if (response.ok) {
+			const data = await response.json();
+			if (data.errors) {
+				return;
+			}
+
+			dispatch(setUser(data));
+		}
 	}
 };
 
@@ -43,6 +50,8 @@ export const login = (email, password) => async (dispatch) => {
 
 	if (response.ok) {
 		const data = await response.json();
+
+		localStorage.setItem('user_name', data.user.user_name);
 		dispatch(setUser(data));
 		return null;
 	} else {
