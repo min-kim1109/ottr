@@ -31,5 +31,6 @@ class Post(db.Model):
             'upload_date': self.upload_date,
             'url': self.url,
             'preview': self.preview,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'comments': [comment.to_dict() for comment in self.comments]
         }
