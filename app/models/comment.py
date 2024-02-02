@@ -15,10 +15,14 @@ class Comment(db.Model):
     user = relationship('User', back_populates='comments')
     post = relationship('Post', back_populates='comments')
 
-    def to_dict(self):
-        return {
+    def to_dict(self, include_user=False):
+        comment_dict = {
             'id': self.id,
             'description': self.description,
             'user_id': self.user_id,
             'post_id': self.post_id
         }
+        if include_user:
+            # Assuming the User model has a 'username' field
+            comment_dict['user_name'] = self.user.username
+        return comment_dict

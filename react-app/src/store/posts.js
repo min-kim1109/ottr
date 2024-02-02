@@ -1,13 +1,18 @@
 
-
-//action constant
+//! ACTION CONSTANTS ---------------------------------------------------------
+// Action Constants for Post
 export const SET_POSTS = 'SET_POSTS';
 export const SET_SINGLE_POST = 'SET_SINGLE_POST';
 export const CREATE_POST = 'CREATE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
 export const DELETE_POST = 'DELETE_POST';
 
-//action creators
+// Action Constants for Comment
+export const CREATE_COMMENT = 'CREATE_COMMENT';
+
+
+//! ACTION CREATOR ---------------------------------------------------------
+// Action Creator for Post
 export const setPosts = (posts) => ({
     type: SET_POSTS,
     posts
@@ -33,8 +38,14 @@ export const deletePostAction = (postId) => ({
     postId
 });
 
+// Action Creator for Comment
+export const createComment = (comment) => ({
+    type: CREATE_COMMENT,
+    comment
+})
 
-//THUNKS
+
+//! THUNKS ---------------------------------------------------------
 //thunk to get all posts
 export const fetchPosts = () => async (dispatch) => {
     const res = await fetch('/api/posts')
@@ -125,9 +136,33 @@ export const deletePost = (postId) => async (dispatch) => {
     }
 };
 
+//thunk for creating a new comment
+export const createNewComment = (post_id, commentData) => async (dispatch) => {
+    const response = await fetch('/api/comments/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...commentData, post_id })
+    });
+
+    if (response.ok) {
+        const newComment = await response.json();
+        dispatch(createComment(newComment));
+        return newComment;
+    } else {
+        const error = await response.json();
+        console.log('Error creating comment:', error);
+        return error;
+    }
+};
+
+
+//! REDUCER ---------------------------------------------------------
 const initialState = {
     posts: [],
     singlePost: null,
+    comments: [],
 };
 
 const postsReducer = (state = initialState, action) => {
@@ -154,13 +189,19 @@ const postsReducer = (state = initialState, action) => {
                     post.id === action.post.id ? action.post : post),
                 singlePost: action.post
             };
-
         case DELETE_POST:
             return {
                 ...state,
                 posts: state.posts.filter(post => post.id !== action.postId),
                 singlePost: state.singlePost && state.singlePost.id === action.postId ? null : state.singlePost
             };
+
+        case CREATE_COMMENT:
+            return {
+                ...state,
+                comments: [...state.comments, action.comment]
+            }
+
 
 
         default:
