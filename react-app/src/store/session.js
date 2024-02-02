@@ -1,8 +1,9 @@
-// constants
+// Constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 
-const setUser = (user) => ({
+// Action Creators
+export const setUser = (user) => ({
 	type: SET_USER,
 	payload: user,
 });
@@ -13,26 +14,18 @@ const removeUser = () => ({
 
 const initialState = { user: null };
 
+// Thunks
 export const authenticate = () => async (dispatch) => {
-	// Check if user data exists in Local Storage
-	const user_name = localStorage.getItem('user_name');
-	if (user_name) {
-		// Dispatch SET_USER with the stored user data
-		dispatch(setUser({ user_name }));
-	} else {
-		// Perform regular authentication request
-		const response = await fetch("/api/auth/", {
-			// ... (existing code)
-		});
+	const response = await fetch("/api/auth/", {
+		credentials: 'include', // Make sure to include credentials for cookies if using sessions
+	});
 
-		if (response.ok) {
-			const data = await response.json();
-			if (data.errors) {
-				return;
-			}
-
-			dispatch(setUser(data));
+	if (response.ok) {
+		const data = await response.json();
+		if (data.errors) {
+			return;
 		}
+		dispatch(setUser(data));
 	}
 };
 
@@ -46,16 +39,14 @@ export const login = (email, password) => async (dispatch) => {
 			email,
 			password,
 		}),
+		credentials: 'include', // Include credentials for cookie-based authentication
 	});
 
 	if (response.ok) {
 		const data = await response.json();
-
-		localStorage.setItem('user_name', data.user.user_name);
 		dispatch(setUser(data));
 		return null;
 	} else {
-		// Check if the response is JSON
 		const contentType = response.headers.get("content-type");
 		if (contentType && contentType.indexOf("application/json") !== -1) {
 			const data = await response.json();
@@ -63,7 +54,6 @@ export const login = (email, password) => async (dispatch) => {
 				return data.errors;
 			}
 		} else {
-			// Handle non-JSON response (like HTML)
 			const text = await response.text();
 			console.error("Non-JSON response received:", text);
 			return ["An error occurred. Please try again."];
@@ -73,16 +63,14 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
 	const response = await fetch("/api/auth/logout", {
-		headers: {
-			"Content-Type": "application/json",
-		},
+		method: "GET", // Ensure this matches the backend expectation
+		credentials: 'include',
 	});
 
 	if (response.ok) {
 		dispatch(removeUser());
 	}
 };
-
 export const signUp = (username, email, password) => async (dispatch) => {
 	const response = await fetch("/api/auth/signup", {
 		method: "POST",
@@ -94,6 +82,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 			email,
 			password,
 		}),
+		credentials: 'include',
 	});
 
 	if (response.ok) {
@@ -110,12 +99,13 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
+// Reducer
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
-			return { user: action.payload };
+			return { ...state, user: action.payload };
 		case REMOVE_USER:
-			return { user: null };
+			return { ...state, user: null };
 		default:
 			return state;
 	}

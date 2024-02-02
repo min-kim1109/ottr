@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { login } from "../../store/session";
+import React, { useState, useEffect } from "react";
+import { login, setUser } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import './LoginForm.css';
@@ -11,15 +11,34 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to="/" />;
+  // Add a useEffect to log the sessionUser when it changes
+  useEffect(() => {
+    console.log("sessionUser:", sessionUser);
+  }, [sessionUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(login(email, password));
-    if (data) {
-      setErrors(data);
+    try {
+      const response = await dispatch(login(email, password));
+      if (response && response.data) {
+        const user = response.data;
+        // Assuming setUser will store the user object in the Redux state
+        dispatch(setUser(user));
+        // Redirect or perform any other action upon successful login
+      } else {
+        console.error("Invalid response structure:", response);
+        setErrors(["An error occurred. Please try again."]);
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      setErrors(["An error occurred. Please try again."]);
     }
   };
+
+  // Check if sessionUser is defined and has user_name property
+  if (sessionUser?.user_name) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <>

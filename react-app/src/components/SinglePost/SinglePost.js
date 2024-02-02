@@ -58,10 +58,10 @@ const SinglePost = () => {
 
     const handleDeleteConfirm = async () => {
         await dispatch(deletePost(post.id));
+        localStorage.removeItem(`comments_${postId}`); // Clear comments from Local Storage
         history.push('/posts');
         setIsModalOpen(false);
     };
-
     return (
         <div>
             <img src={post.image_url} alt={`Post ${post.id} Image`} />

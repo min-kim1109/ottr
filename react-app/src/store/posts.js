@@ -91,11 +91,11 @@ export const createNewPost = (post) => async (dispatch) => {
     if (response.ok) {
         const newPost = await response.json();
         dispatch(createPost(newPost));
-        return newPost;
+        return newPost; // Make sure to return the newPost object here
     } else {
         const error = await response.json();
         console.log(error);
-        return error;
+        return error; // Return error so the calling function can handle it
     }
 };
 
