@@ -9,6 +9,7 @@ export const DELETE_POST = 'DELETE_POST';
 
 // Action Constants for Comment
 export const CREATE_COMMENT = 'CREATE_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT'
 
 
 //! ACTION CREATOR ---------------------------------------------------------
@@ -43,6 +44,11 @@ export const createComment = (comment) => ({
     type: CREATE_COMMENT,
     comment
 })
+
+export const editCommentAction = (comment) => ({
+    type: EDIT_COMMENT,
+    comment
+});
 
 
 //! THUNKS ---------------------------------------------------------
@@ -157,6 +163,26 @@ export const createNewComment = (post_id, commentData) => async (dispatch) => {
     }
 };
 
+// thunk for editing a comment
+export const editComment = (commentId, updatedCommentData) => async (dispatch) => {
+    const response = await fetch(`/api/comments/${commentId}/edit`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedCommentData)
+    });
+
+    if (response.ok) {
+        const updatedComment = await response.json();
+        dispatch(editCommentAction(updatedComment));
+        return updatedComment;
+    } else {
+        const error = await response.json();
+        console.error('Error editing comment:', error);
+        return error;
+    }
+};
 
 //! REDUCER ---------------------------------------------------------
 const initialState = {
@@ -196,11 +222,18 @@ const postsReducer = (state = initialState, action) => {
                 singlePost: state.singlePost && state.singlePost.id === action.postId ? null : state.singlePost
             };
 
+
         case CREATE_COMMENT:
             return {
                 ...state,
                 comments: [...state.comments, action.comment]
             }
+        case EDIT_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.map(comment =>
+                    comment.id === action.comment.id ? action.comment : comment)
+            };
 
 
 

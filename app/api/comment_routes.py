@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Comment, User
 from app.forms.comment_form import CommentForm
+from datetime import datetime
 
 comment_routes = Blueprint('comments', __name__)
 
@@ -36,3 +37,41 @@ def create_comment():
             return jsonify({'error': 'Database error', 'message': str(e)}), 500
     else:
         return jsonify(form.errors), 400
+
+@comment_routes.route('/<int:comment_id>/edit', methods=['PUT'])
+@login_required
+def update_comment(comment_id):
+    try:
+        # Check if the user is authenticated
+        if not current_user.is_authenticated:
+            return jsonify({"error": "Unauthorized"}), 401
+
+        # Retrieve the comment to be updated
+        comment = Comment.query.get(comment_id)
+        if not comment:
+            return jsonify({'error': 'Comment not found'}), 404
+
+        # Check if the current user is the owner of the comment
+        if comment.user_id != current_user.id:
+            return jsonify({"error": "Unauthorized"}), 403
+
+        data = request.get_json()
+
+        # Initialize the form and populate with data
+        form = CommentForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+        form.description.data = data.get('description', comment.description)
+
+        # Validate the form data
+        if form.validate():
+            # Update the comment
+            comment.description = form.description.data
+            comment.edited_at = datetime.now()  # Assuming you have an edited_at field
+
+            db.session.commit()
+            return jsonify({"comment": comment.to_dict()}), 200
+        else:
+            errors = form.errors
+            return jsonify({"errors": errors}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
