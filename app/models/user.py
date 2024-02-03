@@ -11,8 +11,6 @@ class User(db.Model, UserMixin):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
@@ -20,7 +18,6 @@ class User(db.Model, UserMixin):
 
     posts = relationship('Post', back_populates='user', cascade="all, delete-orphan")
     comments = relationship('Comment', back_populates='user', cascade="all, delete-orphan")
-
 
     @property
     def password(self):
@@ -36,6 +33,6 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             'id': self.id,
+            'email': self.email,
             'username': self.username,
-            'email': self.email
         }

@@ -8,7 +8,7 @@ const ShowAllPosts = () => {
     const posts = useSelector((state) => state.posts.posts);
 
     useEffect(() => {
-        dispatch(fetchPosts()); // Fetch posts when component mounts
+        dispatch(fetchPosts());
     }, [dispatch]);
 
     return (

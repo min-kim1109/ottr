@@ -18,8 +18,7 @@ class Post(db.Model):
     image_url = db.Column(db.String(255))
 
     user = db.relationship('User', back_populates='posts')
-    comments = db.relationship('Comment', back_populates='post', cascade="all, delete")
-
+    comments = db.relationship('Comment', back_populates='post', cascade='all, delete-orphan')
     def to_dict(self):
         return {
             'id': self.id,

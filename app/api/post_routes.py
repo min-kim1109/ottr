@@ -109,11 +109,15 @@ def delete_post(post_id):
     currentPost = Post.query.get(post_id)
 
     if not currentPost:
-        return {'error': 'Post does not exist'}, 404
+        return jsonify({'error': 'Post does not exist'}), 404
 
     if currentPost.user_id != current_user.id:
-        return {'error': 'You do not have permission to delete this post'}, 401
+        return jsonify({'error': 'You do not have permission to delete this post'}), 401
 
     db.session.delete(currentPost)
-    db.session.commit()
-    return {'message': 'Post successfully deleted'}, 200
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Post successfully deleted'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

@@ -26,3 +26,7 @@ class Comment(db.Model):
             # Assuming the User model has a 'username' field
             comment_dict['user_name'] = self.user.username
         return comment_dict
+
+    def update(self, description=None):
+        if description is not None:
+            self.description = description
