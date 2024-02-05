@@ -1,20 +1,85 @@
-/* .nav-container {
-  display: flex;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.3);
-
-  padding: 5px 0px;
-
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-
-  z-index: 100;
-} */
-
 .ottr-link {
   text-decoration: none;
   color: inherit;
   font-weight: bold;
+}
+
+/* The modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* The modal itself */
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  /* Adjust the width as necessary */
+  margin: 0 auto;
+  z-index: 1001;
+}
+
+/* Style the inputs to match the provided design */
+.modal input[type="text"],
+.modal input[type="password"],
+.modal input[type="email"],
+.modal input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Style the submit button */
+.modal button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0063dc;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Additional styles for the modal */
+.modal h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.modal .checkbox-container {
+  margin-bottom: 20px;
+}
+
+.modal .terms {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.modal .login-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #0063dc;
+  text-decoration: none;
 }
