@@ -75,3 +75,21 @@ def update_comment(comment_id):
             return jsonify({"errors": errors}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@comment_routes.route('/<int:comment_id>', methods=['DELETE'])
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get(comment_id)
+    if not comment:
+        return jsonify({'error': 'Comment not found'}), 404
+
+    if comment.user_id != current_user.get_id():
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    db.session.delete(comment)
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Comment deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Database error', 'message': str(e)}), 500

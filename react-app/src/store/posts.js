@@ -10,6 +10,7 @@ export const DELETE_POST = 'DELETE_POST';
 // Action Constants for Comment
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 
 //! ACTION CREATOR ---------------------------------------------------------
@@ -48,6 +49,11 @@ export const createComment = (comment) => ({
 export const editCommentAction = (comment) => ({
     type: EDIT_COMMENT,
     comment
+});
+
+export const deleteCommentAction = (commentId) => ({
+    type: DELETE_COMMENT,
+    commentId
 });
 
 
@@ -184,6 +190,22 @@ export const editComment = (commentId, updatedCommentData) => async (dispatch) =
     }
 };
 
+// Thunk for deleting a comment
+export const deleteComment = (commentId) => async (dispatch) => {
+    const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        dispatch(deleteCommentAction(commentId));
+        return commentId;
+    } else {
+        const error = await response.json();
+        console.error('Error deleting comment:', error);
+        return error;
+    }
+};
+
 //! REDUCER ---------------------------------------------------------
 const initialState = {
     posts: [],
@@ -234,6 +256,12 @@ const postsReducer = (state = initialState, action) => {
                 comments: state.comments.map(comment =>
                     comment.id === action.comment.id ? action.comment : comment)
             };
+        case DELETE_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.filter(comment => comment.id !== action.commentId)
+            };
+
 
 
 
