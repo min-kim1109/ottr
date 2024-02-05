@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { fetchPosts, createNewComment, deletePost, editComment } from '../../store/posts'; // Import editComment
+import { fetchPosts, createNewComment, deletePost, editComment, deleteComment } from '../../store/posts';
 import DeleteConfirmationModal from '../DeletePostModal/DeletePostModal';
 
 const SinglePost = () => {
@@ -12,9 +12,10 @@ const SinglePost = () => {
     const sessionUser = useSelector((state) => state.session.user);
     const [commentText, setCommentText] = useState('');
     const [comments, setComments] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingCommentId, setEditingCommentId] = useState(null); // State to track editing comment ID
-    const [editingCommentText, setEditingCommentText] = useState(''); // State to track editing comment text
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deleteTargetId, setDeleteTargetId] = useState(null);
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editingCommentText, setEditingCommentText] = useState('');
 
     useEffect(() => {
         dispatch(fetchPosts());
@@ -22,12 +23,7 @@ const SinglePost = () => {
 
     useEffect(() => {
         if (post) {
-            const storedComments = localStorage.getItem(`comments_${postId}`);
-            if (storedComments) {
-                setComments(JSON.parse(storedComments));
-            } else {
-                setComments(post.comments || []); // Ensure fallback to empty array
-            }
+            setComments(post.comments || []);
         }
     }, [postId, post]);
 
@@ -40,7 +36,6 @@ const SinglePost = () => {
                 setCommentText('');
                 const newComments = [...comments, response];
                 setComments(newComments);
-                localStorage.setItem(`comments_${postId}`, JSON.stringify(newComments));
             } else {
                 console.error('Error creating comment:', response);
             }
@@ -62,23 +57,34 @@ const SinglePost = () => {
                 setEditingCommentText('');
                 const updatedComments = comments.map(comment => comment.id === editingCommentId ? { ...comment, description: editingCommentText } : comment);
                 setComments(updatedComments);
-                localStorage.setItem(`comments_${postId}`, JSON.stringify(updatedComments));
             } else {
                 console.error('Error editing comment:', response);
             }
         }
     };
 
+    const requestDeleteComment = (commentId) => {
+        setDeleteTargetId(commentId);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (deleteTargetId) {
+            await dispatch(deleteComment(deleteTargetId));
+            setIsDeleteModalOpen(false);
+            setComments(comments.filter(comment => comment.id !== deleteTargetId));
+            setDeleteTargetId(null);
+        }
+    };
+
+    const handleDeletePostConfirm = async () => {
+        await dispatch(deletePost(post.id));
+        history.push('/posts');
+    };
+
     if (!post) {
         return <div>Loading...</div>;
     }
-
-    const handleDeleteConfirm = async () => {
-        await dispatch(deletePost(post.id));
-        localStorage.removeItem(`comments_${postId}`);
-        history.push('/posts');
-        setIsModalOpen(false);
-    };
 
     return (
         <div>
@@ -89,7 +95,7 @@ const SinglePost = () => {
             <ul>
                 {comments.map((comment) => (
                     <li key={comment.id}>
-                        {comment.user_name} || {editingCommentId === comment.id ? (
+                        {comment.user_name || 'Anonymous'}: {editingCommentId === comment.id ? (
                             <form onSubmit={handleEditCommentSubmit}>
                                 <textarea
                                     value={editingCommentText}
@@ -102,7 +108,12 @@ const SinglePost = () => {
                         ) : (
                             <>
                                 {comment.description}
-                                <button type="button" onClick={() => openEditCommentModal(comment)}>Edit</button>
+                                {sessionUser && sessionUser.id === comment.user_id && (
+                                    <>
+                                        <button type="button" onClick={() => openEditCommentModal(comment)}>Edit</button>
+                                        <button type="button" onClick={() => requestDeleteComment(comment.id)}>Delete</button>
+                                    </>
+                                )}
                             </>
                         )}
                     </li>
@@ -124,13 +135,13 @@ const SinglePost = () => {
             {sessionUser && sessionUser.id === post.user_id && (
                 <>
                     <button onClick={() => history.push(`/posts/${postId}/edit`)}>Edit Post</button>
-                    <button onClick={() => setIsModalOpen(true)}>Delete Post</button>
+                    <button onClick={() => setIsDeleteModalOpen(true)}>Delete Post</button>
                 </>
             )}
             <DeleteConfirmationModal
-                isOpen={isModalOpen}
-                onDeleteConfirm={handleDeleteConfirm}
-                onCancel={() => setIsModalOpen(false)}
+                isOpen={isDeleteModalOpen}
+                onDeleteConfirm={deleteTargetId ? confirmDelete : handleDeletePostConfirm}
+                onCancel={() => setIsDeleteModalOpen(false)}
             />
         </div>
     );
