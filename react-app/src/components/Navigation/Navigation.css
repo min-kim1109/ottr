@@ -1,10 +1,37 @@
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Default semi-transparent background */
+  z-index: 10;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+.nav-container.opaque {
+  background-color: #202022;
+  /* Fully opaque black */
+}
+
+.auth-buttons-container {
+  margin-left: auto;
+}
+
 .ottr-link {
   text-decoration: none;
   color: inherit;
   font-weight: bold;
+  color: white;
+  padding: 20px;
+  font-size: 25px;
 }
 
-/* The modal backdrop */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -18,19 +45,18 @@
   z-index: 1000;
 }
 
-/* The modal itself */
 .modal {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 400px;
-  /* Adjust the width as necessary */
-  margin: 0 auto;
+  max-height: 50%;
+  overflow-y: auto;
   z-index: 1001;
+
 }
 
-/* Style the inputs to match the provided design */
 .modal input[type="text"],
 .modal input[type="password"],
 .modal input[type="email"],
@@ -42,7 +68,6 @@
   border-radius: 5px;
 }
 
-/* Style the submit button */
 .modal button[type="submit"] {
   width: 100%;
   padding: 10px;
@@ -54,7 +79,6 @@
   cursor: pointer;
 }
 
-/* Additional styles for the modal */
 .modal h1 {
   text-align: center;
   margin-bottom: 20px;
@@ -82,4 +106,61 @@
   font-size: 14px;
   color: #0063dc;
   text-decoration: none;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+  /* Adjust as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.auth-button-signup {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: none;
+  color: black;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.auth-button-signup:hover {
+  color: #7F7F7F
+}
+
+.auth-button-login {
+  padding: 5px 15px;
+  margin: 0 5px;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+
+  /* The gradient background */
+  background: none;
+}
+
+.top-right-nav {
+  padding: 10px;
 }

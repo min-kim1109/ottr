@@ -1,4 +1,4 @@
-.modal {
+.delete-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,10 +8,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    /* Ensuring it's on top of other content */
 }
 
-.modal-content {
+.delete-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
+    width: 30%;
+    /* You can adjust this as needed */
+    min-width: 300px;
+    /* Ensures it doesn't get too small on narrow screens */
+    max-width: 500px;
+    /* Ensures it doesn't get too wide on larger screens */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    /* Ensuring it's on top of the backdrop */
 }
