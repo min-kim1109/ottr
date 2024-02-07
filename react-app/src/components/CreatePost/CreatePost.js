@@ -47,6 +47,7 @@ const CreatePost = () => {
         <>
             <div className="container">
                 {error && <p className="error">{error}</p>}
+                <div className="otter-header">Show Us Your Otter Pictures!</div>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input type="text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
                     <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />

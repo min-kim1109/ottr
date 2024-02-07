@@ -7,6 +7,13 @@
     margin-top: 50px;
 }
 
+.otter-header {
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 30px;
+    margin-bottom: -40px;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -14,6 +21,7 @@ form {
     gap: 20px;
     width: 100%;
     max-width: 500px;
+    margin-top: 50px;
 }
 
 input[type="text"],
