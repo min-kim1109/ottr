@@ -14,7 +14,7 @@
 }
 
 .nav-container.opaque {
-  background-color: #202022;
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .auth-buttons-container {

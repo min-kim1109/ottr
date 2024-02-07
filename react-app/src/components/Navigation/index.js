@@ -30,7 +30,7 @@ function Navigation({ isLoaded }) {
 	const closeLoginModal = () => setShowLoginModal(false);
 	const closeSignupModal = () => setShowSignupModal(false);
 
-	const isTransparent = location.pathname !== '/posts';
+	const isTransparent = !(location.pathname === '/posts' || location.pathname.startsWith('/post'));
 
 	return (
 		<div className={`nav-container ${isTransparent ? '' : 'opaque'}`}>

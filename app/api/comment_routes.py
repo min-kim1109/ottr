@@ -83,7 +83,7 @@ def delete_comment(comment_id):
     if not comment:
         return jsonify({'error': 'Comment not found'}), 404
 
-    if comment.user_id != current_user.get_id():
+    if int(comment.user_id) != int(current_user.get_id()):
         return jsonify({'error': 'Unauthorized'}), 403
 
     db.session.delete(comment)

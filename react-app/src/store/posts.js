@@ -51,8 +51,9 @@ export const editCommentAction = (comment) => ({
     comment
 });
 
-export const deleteCommentAction = (commentId) => ({
+export const deleteCommentAction = (postId, commentId) => ({
     type: DELETE_COMMENT,
+    postId,
     commentId
 });
 
@@ -94,21 +95,18 @@ export const fetchSinglePost = (postId) => async (dispatch) => {
 export const createNewPost = (formData) => async (dispatch) => {
     const response = await fetch('/api/posts/new', {
         method: 'POST',
-        // Removed headers entirely to allow the browser to set the Content-Type
-        // This is important for handling multipart/form-data content type correctly
+
         body: formData
     });
 
     if (response.ok) {
         const newPost = await response.json();
-        // Assuming createPost is your action creator for adding a new post to your Redux store
-        dispatch(createPost(newPost)); // This line might need to be adjusted based on your actual action creator
-        return newPost; // Make sure to return the newPost object here for further handling
+        dispatch(createPost(newPost));
+        return newPost;
     } else {
-        // Handling errors more effectively
-        const error = await response.text(); // Using text in case the response is not in JSON format
+        const error = await response.text();
         console.error("Error creating new post:", error);
-        throw new Error(error); // Throwing an error for the caller to catch
+        throw new Error(error);
     }
 };
 
@@ -192,13 +190,14 @@ export const editComment = (commentId, updatedCommentData) => async (dispatch) =
 };
 
 // Thunk for deleting a comment
-export const deleteComment = (commentId) => async (dispatch) => {
+export const deleteComment = (postId, commentId) => async (dispatch) => {
     const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include', // Include credentials for session-based authentication
     });
 
     if (response.ok) {
-        dispatch(deleteCommentAction(commentId));
+        dispatch(deleteCommentAction(postId, commentId));
         return commentId;
     } else {
         const error = await response.json();
@@ -260,7 +259,16 @@ const postsReducer = (state = initialState, action) => {
         case DELETE_COMMENT:
             return {
                 ...state,
-                comments: state.comments.filter(comment => comment.id !== action.commentId)
+                posts: state.posts.map(post => {
+
+                    if (post.id === action.postId) {
+                        return {
+                            ...post,
+                            comments: post.comments.filter(comment => comment.id !== action.commentId)
+                        };
+                    }
+                    return post;
+                })
             };
 
 
