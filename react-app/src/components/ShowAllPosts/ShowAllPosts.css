@@ -4,6 +4,7 @@
     gap: 10px;
     padding: 10px;
     justify-content: center;
+    margin-top: 50px;
 }
 
 .post-image {
@@ -16,4 +17,11 @@
     height: 300px;
     width: auto;
     object-fit: contain;
+}
+
+.top-text {
+    margin-top: 60px;
+    margin-bottom: -45px;
+    margin-left: 10px;
+    font-weight: bold;
 }

@@ -51,8 +51,9 @@ export const editCommentAction = (comment) => ({
     comment
 });
 
-export const deleteCommentAction = (commentId) => ({
+export const deleteCommentAction = (postId, commentId) => ({
     type: DELETE_COMMENT,
+    postId,
     commentId
 });
 
@@ -90,24 +91,22 @@ export const fetchSinglePost = (postId) => async (dispatch) => {
     }
 };
 
-// thunk to create a new post
-export const createNewPost = (post) => async (dispatch) => {
+// Updated thunk to create a new post with FormData
+export const createNewPost = (formData) => async (dispatch) => {
     const response = await fetch('/api/posts/new', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(post)
+
+        body: formData
     });
 
     if (response.ok) {
         const newPost = await response.json();
         dispatch(createPost(newPost));
-        return newPost; // Make sure to return the newPost object here
+        return newPost;
     } else {
-        const error = await response.json();
-        console.log(error);
-        return error; // Return error so the calling function can handle it
+        const error = await response.text();
+        console.error("Error creating new post:", error);
+        throw new Error(error);
     }
 };
 
@@ -191,13 +190,14 @@ export const editComment = (commentId, updatedCommentData) => async (dispatch) =
 };
 
 // Thunk for deleting a comment
-export const deleteComment = (commentId) => async (dispatch) => {
+export const deleteComment = (postId, commentId) => async (dispatch) => {
     const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include', // Include credentials for session-based authentication
     });
 
     if (response.ok) {
-        dispatch(deleteCommentAction(commentId));
+        dispatch(deleteCommentAction(postId, commentId));
         return commentId;
     } else {
         const error = await response.json();
@@ -259,7 +259,16 @@ const postsReducer = (state = initialState, action) => {
         case DELETE_COMMENT:
             return {
                 ...state,
-                comments: state.comments.filter(comment => comment.id !== action.commentId)
+                posts: state.posts.map(post => {
+
+                    if (post.id === action.postId) {
+                        return {
+                            ...post,
+                            comments: post.comments.filter(comment => comment.id !== action.commentId)
+                        };
+                    }
+                    return post;
+                })
             };
 
 

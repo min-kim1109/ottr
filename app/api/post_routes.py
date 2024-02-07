@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Post
-from app.forms.post_form import PostForm
+from app.forms.post_form import PostForm, CreateImageForm
 from datetime import datetime
+from .aws_helper import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 
 post_routes = Blueprint('posts', __name__)
 
@@ -29,39 +30,43 @@ def get_post(post_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @post_routes.route('/new', methods=['POST'])
 @login_required
 def create_post():
-    try:
-        if not current_user.is_authenticated:
-            return jsonify({"error": "Unauthorized"}), 401
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Unauthorized"}), 401
 
-        data = request.get_json()
+    form = CreateImageForm()
 
-        form = PostForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-        form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        print(form.image.data, "string")
+        image = form.image.data
+        print(image.filename, "string2")
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
+        print(upload, "string3")
 
-        form.post_name.data = data.get('post_name')
-        form.description.data = data.get('description')
-        form.image_url.data = data.get('image_url')
+        if "url" not in upload:
+            return jsonify({"errors": [str(upload)]}), 500
 
-        if form.validate():
-            new_post = Post(
-                user_id=current_user.get_id(),
-                post_name=form.post_name.data,
-                description=form.description.data,
-                image_url=form.image_url.data,
-                upload_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            )
-            db.session.add(new_post)
-            db.session.commit()
-            return jsonify({"post": new_post.to_dict()}), 201
-        else:
-            errors = form.errors
-            return jsonify({"errors": errors}), 400
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        url = upload["url"]
+        new_post = Post(
+            user_id=current_user.get_id(),
+            post_name=form.post_name.data,
+            description=form.description.data,
+            image_url=url,
+            upload_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        db.session.add(new_post)
+        db.session.commit()
+        return jsonify({"post": new_post.to_dict()}), 201
+
+    # If validation fails, return the errors
+    errors = form.errors
+    return jsonify({"errors": errors}), 400
 
 @post_routes.route('/<int:post_id>/edit', methods=['PUT'])
 @login_required

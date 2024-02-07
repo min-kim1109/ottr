@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { fetchPosts, createNewComment, deletePost, editComment, deleteComment } from '../../store/posts';
 import DeleteConfirmationModal from '../DeletePostModal/DeletePostModal';
+import './SinglePost.css';
 
 const SinglePost = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const SinglePost = () => {
             const response = await dispatch(createNewComment(postId, commentData));
             if (response && !response.error) {
                 setCommentText('');
+                // Now directly using the response assuming it includes user_name
                 const newComments = [...comments, response];
                 setComments(newComments);
             } else {
@@ -41,6 +43,7 @@ const SinglePost = () => {
             }
         }
     };
+
 
     const openEditCommentModal = (comment) => {
         setEditingCommentId(comment.id);
@@ -63,16 +66,20 @@ const SinglePost = () => {
         }
     };
 
+    // Update this function to also consider postId
     const requestDeleteComment = (commentId) => {
-        setDeleteTargetId(commentId);
+        setDeleteTargetId({ postId, commentId }); // Adjust to store both IDs
         setIsDeleteModalOpen(true);
     };
 
     const confirmDelete = async () => {
         if (deleteTargetId) {
-            await dispatch(deleteComment(deleteTargetId));
+            // Ensure you're using both postId and commentId when calling deleteComment
+            const { postId, commentId } = deleteTargetId; // Destructure to get both IDs
+            await dispatch(deleteComment(postId, commentId));
             setIsDeleteModalOpen(false);
-            setComments(comments.filter(comment => comment.id !== deleteTargetId));
+            // Update local state to remove the deleted comment
+            setComments(comments.filter(comment => comment.id !== commentId));
             setDeleteTargetId(null);
         }
     };
@@ -88,56 +95,62 @@ const SinglePost = () => {
 
     return (
         <div>
-            <img src={post.image_url} alt={`Post ${post.id} Image`} />
-            <p>{post.post_name}</p>
-            <p>{post.description}</p>
-            <div>Comments:</div>
-            <ul>
-                {comments.map((comment) => (
-                    <li key={comment.id}>
-                        {comment.user_name || 'Anonymous'}: {editingCommentId === comment.id ? (
-                            <form onSubmit={handleEditCommentSubmit}>
-                                <textarea
-                                    value={editingCommentText}
-                                    onChange={(e) => setEditingCommentText(e.target.value)}
-                                    required
-                                />
-                                <button type="submit">Confirm</button>
-                                <button type="button" onClick={() => setEditingCommentId(null)}>Cancel</button>
-                            </form>
-                        ) : (
-                            <>
-                                {comment.description}
-                                {sessionUser && sessionUser.id === comment.user_id && (
-                                    <>
-                                        <button type="button" onClick={() => openEditCommentModal(comment)}>Edit</button>
-                                        <button type="button" onClick={() => requestDeleteComment(comment.id)}>Delete</button>
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
-            {sessionUser && (
-                <>
-                    <form onSubmit={handleCommentSubmit}>
-                        <textarea
-                            placeholder="Leave a comment..."
-                            value={commentText}
-                            onChange={(e) => setCommentText(e.target.value)}
-                            required
-                        />
-                        <button type="submit">Post Comment</button>
-                    </form>
-                </>
-            )}
-            {sessionUser && sessionUser.id === post.user_id && (
-                <>
-                    <button onClick={() => history.push(`/posts/${postId}/edit`)}>Edit Post</button>
-                    <button onClick={() => setIsDeleteModalOpen(true)}>Delete Post</button>
-                </>
-            )}
+            <div className="photo-container">
+                <img src={post.image_url} alt={`Post ${post.id} Image`} />
+            </div>
+            <div className="information-section">
+                <h2 className="post-name">{post.post_name}</h2>
+                <p className="post-description">{post.description}</p>
+            </div>
+            <div className="comments-section">
+                Comments:
+                <ul>
+                    {comments.map((comment) => (
+                        <li key={comment.id} className="comment">
+                            {comment.user_name || 'Anonymous'}: {editingCommentId === comment.id ? (
+                                <form onSubmit={handleEditCommentSubmit}>
+                                    <textarea
+                                        value={editingCommentText}
+                                        onChange={(e) => setEditingCommentText(e.target.value)}
+                                        required
+                                    />
+                                    <button type="submit">Confirm</button>
+                                    <button type="button" onClick={() => setEditingCommentId(null)}>Cancel</button>
+                                </form>
+                            ) : (
+                                <>
+                                    {comment.description}
+                                    {sessionUser && sessionUser.id === comment.user_id && (
+                                        <>
+                                            <button type="button" onClick={() => openEditCommentModal(comment)}>Edit</button>
+                                            <button type="button" onClick={() => requestDeleteComment(comment.id)}>Delete</button>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+                {sessionUser && (
+                    <>
+                        <form onSubmit={handleCommentSubmit}>
+                            <textarea
+                                placeholder="Leave a comment..."
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                                required
+                            />
+                            <button type="submit">Post Comment</button>
+                        </form>
+                    </>
+                )}
+                {sessionUser && sessionUser.id === post.user_id && (
+                    <>
+                        <button onClick={() => history.push(`/posts/${postId}/edit`)}>Edit Post</button>
+                        <button onClick={() => setIsDeleteModalOpen(true)}>Delete Post</button>
+                    </>
+                )}
+            </div>
             <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onDeleteConfirm={deleteTargetId ? confirmDelete : handleDeletePostConfirm}
