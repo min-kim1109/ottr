@@ -90,24 +90,25 @@ export const fetchSinglePost = (postId) => async (dispatch) => {
     }
 };
 
-// thunk to create a new post
-export const createNewPost = (post) => async (dispatch) => {
+// Updated thunk to create a new post with FormData
+export const createNewPost = (formData) => async (dispatch) => {
     const response = await fetch('/api/posts/new', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(post)
+        // Removed headers entirely to allow the browser to set the Content-Type
+        // This is important for handling multipart/form-data content type correctly
+        body: formData
     });
 
     if (response.ok) {
         const newPost = await response.json();
-        dispatch(createPost(newPost));
-        return newPost; // Make sure to return the newPost object here
+        // Assuming createPost is your action creator for adding a new post to your Redux store
+        dispatch(createPost(newPost)); // This line might need to be adjusted based on your actual action creator
+        return newPost; // Make sure to return the newPost object here for further handling
     } else {
-        const error = await response.json();
-        console.log(error);
-        return error; // Return error so the calling function can handle it
+        // Handling errors more effectively
+        const error = await response.text(); // Using text in case the response is not in JSON format
+        console.error("Error creating new post:", error);
+        throw new Error(error); // Throwing an error for the caller to catch
     }
 };
 
