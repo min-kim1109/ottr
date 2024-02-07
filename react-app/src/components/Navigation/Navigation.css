@@ -7,7 +7,6 @@
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.2);
-  /* Default semi-transparent background */
   z-index: 10;
   padding: 10px 20px;
   box-sizing: border-box;
@@ -16,7 +15,6 @@
 
 .nav-container.opaque {
   background-color: #202022;
-  /* Fully opaque black */
 }
 
 .auth-buttons-container {
@@ -163,4 +161,11 @@
 
 .top-right-nav {
   padding: 10px;
+}
+
+.create-post-link {
+  text-decoration: none;
+  color: white;
+  margin-right: 15px;
+  padding-top: 5px;
 }

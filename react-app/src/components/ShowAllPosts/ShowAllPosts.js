@@ -13,7 +13,8 @@ const ShowAllPosts = () => {
     }, [dispatch]);
 
     return (
-        <div className="header-text">Everyone's Otter photos
+        <div>
+            <div className="top-text">Everyone's Otter photos</div>
             <div className="main-image-container">
 
                 {posts.map((post) => (
