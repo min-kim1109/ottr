@@ -1,0 +1,42 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    max-width: 500px;
+    margin: auto;
+    margin-top: -25px;
+    /* This centers the form if the parent container is wider */
+    /* Add any additional styling here */
+}
+
+.login-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0063dc;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.email-input,
+.password-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+}
+
+
+.email-input input,
+.password-input input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

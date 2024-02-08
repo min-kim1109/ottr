@@ -45,18 +45,18 @@ const CreatePost = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="createpost-container">
                 {error && <p className="error">{error}</p>}
                 <div className="otter-header">Show Us Your Otter Pictures!</div>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <input type="text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
+                <form onSubmit={handleSubmit} className="createpost-form" encType="multipart/form-data">
+                    <input type="text" className="createpost-text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
                     <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
                     <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => setImage(e.target.files[0])}
                     />
-                    <button type="submit">Create Post</button>
+                    <button type="submit" className="create-post-button">Create Post</button>
                     {imageLoading && <p>Loading...</p>}
                 </form>
             </div>

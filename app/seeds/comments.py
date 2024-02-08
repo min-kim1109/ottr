@@ -4,7 +4,7 @@ from app.models.comment import Comment
 
 def seed_comments():
     marnie = User.query.filter_by(username='marnie').first()
-    demo_post = Post.query.filter_by(post_name='Demo Post').first()
+    demo_post = Post.query.filter_by(post_name='Family outing').first()
 
     marnie_comment = Comment(
         user=marnie,
