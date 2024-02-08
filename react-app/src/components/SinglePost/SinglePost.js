@@ -140,7 +140,7 @@ const SinglePost = () => {
                                 onChange={(e) => setCommentText(e.target.value)}
                                 required
                             />
-                            <button type="submit">Post Comment</button>
+                            <button type="submit" className="postcomment">Post Comment</button>
                         </form>
                     </>
                 )}

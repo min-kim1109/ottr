@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateExistingPost, fetchSinglePost } from '../../store/posts';
 import { useHistory } from 'react-router-dom';
-
+import './UpdatePost.css'
 
 const UpdatePost = ({ postId }) => {
     const [postName, setPostName] = useState('');
     const [description, setDescription] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [image, setImage] = useState(null); // Use for file input instead of imageUrl
     const [error, setError] = useState('');
+    const [imageLoading, setImageLoading] = useState(false);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -23,38 +24,53 @@ const UpdatePost = ({ postId }) => {
         } else {
             setPostName(post.post_name);
             setDescription(post.description);
-            setImageUrl(post.image_url);
+            // Don't set image here as it's a file input, not a URL
         }
     }, [post, postId, dispatch]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedPost = {
-            post_name: postName,
-            description: description,
-            image_url: imageUrl, // Assuming your backend expects an image_url field
-        };
+        setError('');
+        setImageLoading(true);
+
+        const formData = new FormData();
+        formData.append('post_name', postName);
+        formData.append('description', description);
+        if (image) formData.append('image', image);
+
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
 
         try {
-            const updated = await dispatch(updateExistingPost(postId, updatedPost));
+            console.log('Form data before dispatch:', formData.get('description'));
+            const updated = await dispatch(updateExistingPost(postId, formData));
+            setImageLoading(false); // Image upload done
+
             if (updated) {
                 history.push(`/post/${postId}`);
             }
         } catch (err) {
+            setImageLoading(false); // Ensure loading is false on error
             setError(err.message || 'An error occurred while updating the post.');
         }
     };
 
     return (
         <>
-            <div className="container">
+            <div className="updatepost-container">
                 {error && <p className="error">{error}</p>}
                 <div className="otter-header">Update Your Otter Picture Post!</div>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <input type="text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
+                <form onSubmit={handleSubmit} className="updatepost-form" encType="multipart/form-data">
+                    <input type="text" className="updatepost-text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
                     <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                    <input type="text" placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-                    <button type="submit">Update Post</button>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImage(e.target.files[0])}
+                    />
+                    <button type="submit" className="updatepost-button">Update Post</button>
+                    {imageLoading && <p>Loading...</p>}
                 </form>
             </div>
         </>

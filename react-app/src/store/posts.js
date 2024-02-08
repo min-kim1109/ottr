@@ -114,20 +114,26 @@ export const createNewPost = (formData) => async (dispatch) => {
 export const updateExistingPost = (postId, updatedPostData) => async (dispatch) => {
     const response = await fetch(`/api/posts/${postId}/edit`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedPostData)
+        body: updatedPostData, // Assuming updatedPostData is always FormData
+        credentials: 'include', // Necessary if your API requires cookies or CSRF tokens
     });
 
     if (response.ok) {
         const updatedPost = await response.json();
+        console.log('Dispatching updated post:', updatedPost);
         dispatch(updatePostAction(updatedPost));
         return updatedPost;
     } else {
-        const error = await response.json();
-        console.log(error);
-        return error;
+        // Improved error handling
+        try {
+            const error = await response.json();
+            console.log('Update error:', error);
+            return Promise.reject(error); // Reject the promise to allow the catch block to handle it
+        } catch (jsonError) {
+            // If the response is not JSON (like an HTML error page), just log the status
+            console.error('Update failed with status:', response.status);
+            return Promise.reject(new Error('Update failed'));
+        }
     }
 };
 
@@ -233,9 +239,9 @@ const postsReducer = (state = initialState, action) => {
         case UPDATE_POST:
             return {
                 ...state,
-                posts: state.posts.map(post =>
-                    post.id === action.post.id ? action.post : post),
-                singlePost: action.post
+                posts: state.posts.map((post) =>
+                    post.id === action.post.id ? { ...post, ...action.post } : post
+                ),
             };
         case DELETE_POST:
             return {

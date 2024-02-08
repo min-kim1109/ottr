@@ -1,5 +1,4 @@
-/* CreatePost.css */
-.createpost-container {
+.updatepost-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,14 +6,15 @@
     margin-top: 50px;
 }
 
-.otter-header {
-    font-weight: bold;
-    font-size: 22px;
-    margin-top: 30px;
-    margin-bottom: -40px;
+.updatepost-text {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.createpost-form {
+.updatepost-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,17 +24,7 @@
     margin-top: 50px;
 }
 
-.createpost-text,
-textarea,
-input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.create-post-button {
+.updatepost-button {
     cursor: pointer;
     padding: 10px 20px;
     background-color: #007bff;
@@ -44,11 +34,6 @@ input[type="file"] {
     transition: background-color 0.3s ease;
 }
 
-.create-post-button:hover {
+.updatepost-button:hover {
     background-color: #0056b3;
-}
-
-.error {
-    color: red;
-    margin-bottom: 20px;
 }

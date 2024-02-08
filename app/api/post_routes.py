@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Post
-from app.forms.post_form import PostForm, CreateImageForm
+from app.forms.post_form import PostForm, CreateImageForm, UpdateImageForm
 from datetime import datetime
 from .aws_helper import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 
@@ -79,23 +79,30 @@ def update_post(post_id):
         if not post:
             return jsonify({'error': 'Post not found'}), 404
 
-        data = request.get_json()
-
-        form = PostForm()
+        form = UpdateImageForm()  # Your updated form with optional fields
 
         form['csrf_token'].data = request.cookies['csrf_token']
 
-        form.post_name.data = data.get('post_name', post.post_name)
-        form.description.data = data.get('description', post.description)
-        form.image_url.data = data.get('image_url', post.image_url)
+        if form.validate_on_submit():
+            if form.image.data:
+                print(form.image.data, "string")
+                image = form.image.data
+                image.filename = get_unique_filename(image.filename)
+                upload = upload_file_to_s3(image)
 
-        if form.validate():
+                if "url" not in upload:
+                    return jsonify({"errors": [str(upload)]}), 500
 
-            post.post_name = form.post_name.data
-            post.description = form.description.data
-            post.image_url = form.image_url.data
+                post.image_url = upload["url"]
+
+            # Only update fields if they were included in the form submission
+            if form.post_name.data:
+                post.post_name = form.post_name.data
+            if form.description.data:
+                post.description = form.description.data
+
+            # Update the upload date
             post.upload_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
 
             db.session.commit()
             return jsonify({"post": post.to_dict()}), 200

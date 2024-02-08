@@ -45,7 +45,10 @@
 
 .modal {
   background-color: #fff;
-  padding: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 400px;
@@ -55,9 +58,25 @@
 
 }
 
-.modal input[type="text"],
-.modal input[type="password"],
-.modal input[type="email"],
+/* .modal input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal input[type="email"] {
+
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+
+}
+
+
 .modal input[type="number"] {
   width: 100%;
   padding: 10px;
@@ -66,8 +85,17 @@
   border-radius: 5px;
 }
 
-.modal button[type="submit"] {
-  width: 100%;
+.modal input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+} */
+
+
+/* .modal button[type="submit"] {
+  width: 75%;
   padding: 10px;
   border: none;
   border-radius: 5px;
@@ -75,17 +103,21 @@
   color: white;
   font-size: 16px;
   cursor: pointer;
-}
+  margin-top: -10px;
+} */
 
 .modal h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: black;
+
 }
 
-.modal label {
+/* .modal label {
   display: block;
   margin-bottom: 5px;
-}
+
+} */
 
 .modal .checkbox-container {
   margin-bottom: 20px;
