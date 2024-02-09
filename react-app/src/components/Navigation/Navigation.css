@@ -26,8 +26,12 @@
   color: inherit;
   font-weight: bold;
   color: white;
-  padding: 20px;
+  padding: 5px;
   font-size: 25px;
+}
+
+#otter-image {
+  margin-left: 5px;
 }
 
 .modal-backdrop {
@@ -198,6 +202,50 @@
 .create-post-link {
   text-decoration: none;
   color: white;
-  margin-right: 15px;
+  margin-right: 12px;
   padding-top: 5px;
+}
+
+.profile-button {
+  padding: 8px 8px;
+  width: fit-content;
+  border-radius: 10px;
+  color: #99A1FF;
+  font-weight: bold;
+  align-items: center;
+}
+
+.logout-button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0063dc;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #0056b3;
+}
+
+.dropdown-styling {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-dropdown li {
+  margin-bottom: 5px;
+
+}
+
+.profile-button .fas.fa-user-circle {
+  font-size: 22px;
+  /* Adjust the size as needed */
 }

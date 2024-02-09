@@ -43,3 +43,25 @@
     border: 1px solid #ccc;
     border-radius: 10px;
 }
+
+.email-error {
+    display: flex;
+    text-align: center;
+    font-style: italic;
+    font-size: 13px;
+    color: #682C2C;
+    margin: 7px;
+    margin-top: 11px;
+    margin-bottom: 3px;
+}
+
+.pw-error {
+    display: flex;
+    text-align: center;
+    font-style: italic;
+    font-size: 13px;
+    color: #682C2C;
+    margin: 7px;
+    margin-top: 11px;
+    margin-bottom: 3px;
+}

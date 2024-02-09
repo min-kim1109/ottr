@@ -12,9 +12,16 @@ const DeleteConfirmationModal = ({ isOpen, onDeleteConfirm, onCancel }) => {
     return (
         <div className="delete-modal" onClick={onCancel}>
             <div className="delete-modal-content" onClick={stopPropagation}>
-                <p>Are you sure you want to delete?</p>
-                <button onClick={onDeleteConfirm}>Yes, Delete</button>
-                <button onClick={onCancel}>No, I don't want to delete</button>
+                <div className="are-u-sure">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div className="yes-delete-container">
+                    <button onClick={onDeleteConfirm} className="yes-delete">Yes, Delete</button>
+                </div>
+                <div className="no-delete-container">
+                    <button onClick={onCancel} className="no-delete">No, I don't want to delete</button>
+                </div>
+
             </div>
         </div>
     );

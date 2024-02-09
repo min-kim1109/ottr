@@ -35,7 +35,6 @@ const SinglePost = () => {
             const response = await dispatch(createNewComment(postId, commentData));
             if (response && !response.error) {
                 setCommentText('');
-                // Now directly using the response assuming it includes user_name
                 const newComments = [...comments, response];
                 setComments(newComments);
             } else {
@@ -66,19 +65,16 @@ const SinglePost = () => {
         }
     };
 
-    // Update this function to also consider postId
     const requestDeleteComment = (commentId) => {
-        setDeleteTargetId({ postId, commentId }); // Adjust to store both IDs
+        setDeleteTargetId({ postId, commentId });
         setIsDeleteModalOpen(true);
     };
 
     const confirmDelete = async () => {
         if (deleteTargetId) {
-            // Ensure you're using both postId and commentId when calling deleteComment
-            const { postId, commentId } = deleteTargetId; // Destructure to get both IDs
+            const { postId, commentId } = deleteTargetId;
             await dispatch(deleteComment(postId, commentId));
             setIsDeleteModalOpen(false);
-            // Update local state to remove the deleted comment
             setComments(comments.filter(comment => comment.id !== commentId));
             setDeleteTargetId(null);
         }
@@ -106,7 +102,7 @@ const SinglePost = () => {
                 Comments:
                 <ul>
                     {comments.map((comment) => (
-                        <li key={comment.id} className="comment">
+                        <div key={comment.id} className="comment">
                             {comment.user_name || 'Anonymous'}: {editingCommentId === comment.id ? (
                                 <form onSubmit={handleEditCommentSubmit}>
                                     <textarea
@@ -122,32 +118,50 @@ const SinglePost = () => {
                                     {comment.description}
                                     {sessionUser && sessionUser.id === comment.user_id && (
                                         <>
-                                            <button type="button" onClick={() => openEditCommentModal(comment)}>Edit</button>
-                                            <button type="button" onClick={() => requestDeleteComment(comment.id)}>Delete</button>
+
+                                            <button type="button" onClick={() => openEditCommentModal(comment)} title="Edit Comment">
+                                                <img src="https://i.imgur.com/WJ9TOV6.png" alt="Edit Comment" />
+                                            </button>
+                                            <button type="button" onClick={() => requestDeleteComment(comment.id)} title="Delete Comment">
+                                                <img src="https://i.imgur.com/SgyQMPj.png" alt="Delete Comment" />
+                                            </button>
+
                                         </>
                                     )}
                                 </>
                             )}
-                        </li>
+                        </div>
                     ))}
                 </ul>
                 {sessionUser && (
                     <>
+                        {commentText.length > 175 && (
+                            <div className="character-count">
+                                {commentText.length < 225 ? `${225 - commentText.length} characters left` : "Maximum characters reached!"}
+                            </div>
+                        )}
+
                         <form onSubmit={handleCommentSubmit}>
                             <textarea
                                 placeholder="Leave a comment..."
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
+                                maxLength={225}
                                 required
                             />
+
                             <button type="submit" className="postcomment">Post Comment</button>
                         </form>
                     </>
                 )}
                 {sessionUser && sessionUser.id === post.user_id && (
                     <>
-                        <button onClick={() => history.push(`/posts/${postId}/edit`)}>Edit Post</button>
-                        <button onClick={() => setIsDeleteModalOpen(true)}>Delete Post</button>
+                        <button onClick={() => history.push(`/posts/${postId}/edit`)} title="Edit Post">
+                            <img src="https://i.imgur.com/gykwnPa.png" alt="Edit Post" />
+                        </button>
+                        <button onClick={() => setIsDeleteModalOpen(true)} title="Delete Post">
+                            <img src="https://i.imgur.com/SgyQMPj.png" alt="Delete Post" />
+                        </button>
                     </>
                 )}
             </div>

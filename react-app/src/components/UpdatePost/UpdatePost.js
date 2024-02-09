@@ -11,8 +11,11 @@ const UpdatePost = ({ postId }) => {
     const [error, setError] = useState('');
     const [imageLoading, setImageLoading] = useState(false);
 
+    const maxCharacters = 225;
+
     const dispatch = useDispatch();
     const history = useHistory();
+
 
     const post = useSelector((state) =>
         state.posts.posts.find((p) => p.id === parseInt(postId))
@@ -62,8 +65,32 @@ const UpdatePost = ({ postId }) => {
                 {error && <p className="error">{error}</p>}
                 <div className="otter-header">Update Your Otter Picture Post!</div>
                 <form onSubmit={handleSubmit} className="updatepost-form" encType="multipart/form-data">
-                    <input type="text" className="updatepost-text" placeholder="Post Name" value={postName} onChange={(e) => setPostName(e.target.value)} required />
-                    <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                    {postName.length > maxCharacters - 50 && (
+                        <div className="character-count2">
+                            {postName.length < maxCharacters ? `${maxCharacters - postName.length} characters left` : "Maximum characters reached!"}
+                        </div>
+                    )}
+                    <input
+                        type="text"
+                        className="updatepost-text"
+                        placeholder="Post Name"
+                        value={postName}
+                        onChange={(e) => setPostName(e.target.value)}
+                        maxLength={maxCharacters}
+                        required
+                    />
+                    {description.length > maxCharacters - 50 && (
+                        <div className="character-count2">
+                            {description.length < maxCharacters ? `${maxCharacters - description.length} characters left` : "Maximum characters reached!"}
+                        </div>
+                    )}
+                    <textarea
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        maxLength={maxCharacters}
+                        required
+                    />
                     <input
                         type="file"
                         accept="image/*"
