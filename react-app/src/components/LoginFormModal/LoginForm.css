@@ -10,10 +10,18 @@
     /* Add any additional styling here */
 }
 
-.login-button {
+.login-buttons {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: space-between;
+    width: 300px;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.login-button,
+.demo-login-button {
+    flex: 1;
+    /* This makes both buttons take up equal space */
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -21,6 +29,12 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
+    margin: 5px;
+}
+
+.login-button:hover,
+.demo-login-button:hover {
+    background-color: #347FDB;
 }
 
 .email-input,
@@ -39,4 +53,15 @@
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.error-validations {
+    display: flex;
+    text-align: center;
+    font-style: italic;
+    font-size: 13px;
+    color: #682C2C;
+    margin: 7px;
+    margin-top: 11px;
+    margin-bottom: 3px;
 }

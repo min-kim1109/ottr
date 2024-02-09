@@ -15,14 +15,61 @@
 .delete-modal-content {
     background-color: white;
     padding: 20px;
+    padding-bottom: 30px;
     border-radius: 5px;
-    width: 30%;
-    /* You can adjust this as needed */
+    width: 10%;
     min-width: 300px;
-    /* Ensures it doesn't get too small on narrow screens */
     max-width: 500px;
-    /* Ensures it doesn't get too wide on larger screens */
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1001;
-    /* Ensuring it's on top of the backdrop */
+}
+
+.yes-delete {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0063dc;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.yes-delete:hover {
+    background-color: #347FDB;
+}
+
+.no-delete {
+    display: flex;
+    justify-content: center;
+    width: 75%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1F3551;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.no-delete:hover {
+    background-color: #29476B;
+}
+
+.yes-delete-container {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.no-delete-container {
+    display: flex;
+    justify-content: center;
+}
+
+.are-u-sure {
+    display: flex;
+    justify-content: center;
 }

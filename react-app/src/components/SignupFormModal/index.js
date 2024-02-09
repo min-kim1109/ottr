@@ -13,31 +13,47 @@ function SignupFormModal() {
 	const [errors, setErrors] = useState([]);
 	const { closeModal } = useModal();
 
+	const isValidEmail = (email) => {
+		return /\S+@\S+\.\S+/.test(email);
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
-			if (data) {
-				setErrors(data);
-			} else {
-				closeModal();
-			}
+		let newErrors = [];
+
+		if (!isValidEmail(email)) {
+			newErrors.push("Please enter a valid email address");
+		}
+
+		if (password !== confirmPassword) {
+			newErrors.push("Confirm Password field must be the same as the Password field.");
+		}
+
+		if (newErrors.length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
+		const data = await dispatch(signUp(username, email, password));
+		if (data) {
+			setErrors(data);
 		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
+			closeModal();
 		}
 	};
+
+	const emailErrors = errors.filter(error => error.toLowerCase().includes('email'));
+	const passwordErrors = errors.filter(error => error.toLowerCase().includes('password'));
 
 	return (
 		<>
 			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit} className="signup-form">
-				<ul>
-					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
+				<div className="email-error">
+					{emailErrors.map((error, idx) => (
+						<div key={`email-error-${idx}`}>{error}</div>
 					))}
-				</ul>
+				</div>
 				<label className="signup-email">
 					Email
 					<input
@@ -65,6 +81,11 @@ function SignupFormModal() {
 						required
 					/>
 				</label>
+				<div className="pw-error">
+					{passwordErrors.map((error, idx) => (
+						<div key={`password-error-${idx}`}>{error}</div>
+					))}
+				</div>
 				<label className="signup-confirmpw">
 					Confirm Password
 					<input

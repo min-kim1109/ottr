@@ -37,6 +37,7 @@ function Navigation({ isLoaded }) {
 			<div className="ottr-button-container">
 				<NavLink exact to="/" className="ottr-link">
 					Ottr
+					<img id="otter-image" src="https://i.imgur.com/lFonrwq.gif" alt="animated-otter"></img>
 				</NavLink>
 			</div>
 			<div className="auth-buttons-container">
