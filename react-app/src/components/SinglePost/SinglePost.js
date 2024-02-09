@@ -103,15 +103,22 @@ const SinglePost = () => {
                 <ul>
                     {comments.map((comment) => (
                         <div key={comment.id} className="comment">
-                            {comment.user_name || 'Anonymous'}: {editingCommentId === comment.id ? (
+                            {comment.user_name || 'Anonymous'} - {editingCommentId === comment.id ? (
                                 <form onSubmit={handleEditCommentSubmit}>
+                                    {editingCommentText.length > 175 && (
+                                        <div className="character-count">
+                                            {editingCommentText.length < 225 ? `${225 - editingCommentText.length} characters left` : "Maximum characters reached!"}
+                                        </div>
+                                    )}
                                     <textarea
                                         value={editingCommentText}
                                         onChange={(e) => setEditingCommentText(e.target.value)}
+                                        maxLength={225}
                                         required
                                     />
-                                    <button type="submit">Confirm</button>
-                                    <button type="button" onClick={() => setEditingCommentId(null)}>Cancel</button>
+
+                                    <button type="submit" className="editpost-confirm">Confirm</button>
+                                    <button type="button" onClick={() => setEditingCommentId(null)} className="editpost-cancel">Cancel</button>
                                 </form>
                             ) : (
                                 <>

@@ -56,6 +56,8 @@ body {
     margin-bottom: 10px;
     width: 98%;
     margin-left: -20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 
@@ -76,6 +78,10 @@ textarea {
     border-radius: 5px;
     transition: background-color 0.3s ease;
     margin-bottom: 10px;
+}
+
+.postcomment:hover {
+    background-color: #347FDB;
 }
 
 button {
@@ -112,7 +118,39 @@ button:hover img {
 
 .post-description {
     word-wrap: break-word;
-    /* Allows long words to be broken and wrap to the next line */
+
     overflow-wrap: break-word;
-    /* Ensures wrapping occurs if an unbreakable string is too long */
+
+}
+
+
+
+.editpost-confirm {
+    cursor: pointer;
+    padding: 5px 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+}
+
+.editpost-cancel {
+    cursor: pointer;
+    padding: 5px 5px;
+    background-color: #1F3551;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 3px;
+}
+
+.editpost-confirm:hover {
+    background-color: #347FDB;
+}
+
+.editpost-cancel:hover {
+    background-color: #29476B;
 }
