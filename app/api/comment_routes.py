@@ -42,31 +42,25 @@ def create_comment():
 @login_required
 def update_comment(comment_id):
     try:
-        # Check if the user is authenticated
         if not current_user.is_authenticated:
             return jsonify({"error": "Unauthorized"}), 401
 
-        # Retrieve the comment to be updated
         comment = Comment.query.get(comment_id)
         if not comment:
             return jsonify({'error': 'Comment not found'}), 404
 
-        # Check if the current user is the owner of the comment
         if comment.user_id != current_user.id:
             return jsonify({"error": "Unauthorized"}), 403
 
         data = request.get_json()
 
-        # Initialize the form and populate with data
         form = CommentForm()
         form['csrf_token'].data = request.cookies['csrf_token']
         form.description.data = data.get('description', comment.description)
 
-        # Validate the form data
         if form.validate():
-            # Update the comment
             comment.description = form.description.data
-            comment.edited_at = datetime.now()  # Assuming you have an edited_at field
+            comment.edited_at = datetime.now() 
 
             db.session.commit()
             return jsonify({"comment": comment.to_dict()}), 200
