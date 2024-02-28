@@ -10,6 +10,7 @@ import UpdatePost from "./components/UpdatePost/UpdatePost"; // Import the Updat
 import Homepage from "./components/Homepage/Homepage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import Footer from './components/Footer'
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
           <Redirect to="/posts" />
         </Switch>
       )}
+      <Footer />
     </>
   );
 }
