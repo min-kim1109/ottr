@@ -1,4 +1,5 @@
-# Flickr Clone
+# Capstone Full Stack Project (Ottr)
+This is my fullstack project, Ottr, a Flickr webapp clone created to allow users to upload and post pictures of various otters in nature.
 
 ## Database Schema Design
 ![flickr-database-schema]
