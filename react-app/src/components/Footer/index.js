@@ -26,12 +26,28 @@ function Footer() {
             case 'Contact Me':
                 return (
                     <div className="modal-contact-me">
-                        <a href="https://www.linkedin.com/in/min-kim-b2607a18a/" target="_blank" rel="noopener noreferrer">
-                            <div className="linkedin-image"><img className="contact-linkedin" src="https://i.imgur.com/j0c66UJ.png" alt="LinkedIn" /></div>
-                        </a>
-                        <a href="https://www.github.com/yourusername" target="_blank" rel="noopener noreferrer">
-                            <div className="github-image"><img className="contact-github" src="https://i.imgur.com/zdK8doO.png" alt="GitHub" /></div>
-                        </a>
+                        <div className="contact-header">Reach out to me!</div>
+                        <div className="linkedin-container">
+                            <a href="https://www.linkedin.com/in/min-kim-b2607a18a/" target="_blank" rel="noopener noreferrer">
+                                <div className="linkedin-image"><img className="contact-linkedin" src="https://i.imgur.com/zdK8doO.png" alt="LinkedIn" />
+                                    <div className="linkedin-link">LinkedIn</div>
+                                </div>
+                            </a></div>
+                        <div className="github-container">
+                            <a href="https://github.com/min-kim1109/ottr" target="_blank" rel="noopener noreferrer">
+                                <div className="github-image"><img className="contact-github" src="https://i.imgur.com/j0c66UJ.png" alt="GitHub" />
+                                    <div className="github-link">GitHub</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div className="portfolio-container">
+                            <a href="https://min-kim1109.github.io/" target="_blank" rel="noopener noreferrer">
+                                <div className="github-image"><img className="contact-portfolio" src="https://i.imgur.com/AXhCbFH.png" alt="Portfolio" />
+                                    <div className="portfolio-link">Portfolio</div>
+                                </div>
+                            </a>
+                        </div>
+
                     </div>
                 );
             case 'Stack':
