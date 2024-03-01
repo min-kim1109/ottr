@@ -95,13 +95,11 @@ def update_post(post_id):
 
                 post.image_url = upload["url"]
 
-            # Only update fields if they were included in the form submission
             if form.post_name.data:
                 post.post_name = form.post_name.data
             if form.description.data:
                 post.description = form.description.data
 
-            # Update the upload date
             post.upload_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             db.session.commit()
