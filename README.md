@@ -62,46 +62,36 @@ This is my fullstack project, Ottr, a Flickr webapp clone created to allow users
 
 3. cd into the react-app folder and then run `npm start` to start the front-end
 
-## User Stories
+# Site Overview
 
-**1st Core Feature**
-Create new post
-- As a logged in verified account, I want to be able to create a new post on my site.
-    - When I'm on the `/posts/new` page:
-        - I would like to be able to enter the name of my post and the description of the picture I'm uploading so that anyone looking for my post will be able to search for it clearly.
+## Landing Page
+- This is the homepage of Ottr, where users can see their options to either login/sign up in the navigation header bar. Also contains a footer with all relevant information regarding the site, contact information for the developer, as well as the list of technologies used to develop the webapp.
 
-Viewing all posts
-- As a logged in *or* logged out user, I want to be able to view a selection of all the posts that users have uploaded.
-    - When I'm on the `/posts/:id` page:
-        - I can view all the pictures that users have posted onto the site.
+## Sign Up
+- Unregistered users have the option to create an account through the dropdown menu located at the top-right corner
+- In the event a user attempts to input invalid information, error messages will populate to guide the user to resolve them accurately
+- Upon successful completion of the Sign Up form, the new user will be logged in automatically
 
-Updating Post
-- As a logged in user with the post owner status, I want to be able to edit my post(s) by clicking an edit button associated with the post
-    - When I'm on the `/posts/current` page:
-        - I can click "edit" to make permanent changes to the posts I have uploaded, so that I can fix any errors I make
+## Log In
+- Existing users can access their accounts through the designated login portal through the dropdown menu located at the top-right corner
+- To gain full access to Ottr quickly, simply click the "Sign In as Demo User" button. This will allow you to creating new posts, manage created posts, and leave comments on other's posts
 
-Deleting Post
-- As a logged in user with the post owner status, I want to be able to delete my product by clicking a delete button associated with the post
-    - When I'm on the `/posts/current` page:
-        - I can click "delete" to permanently delete a post I have uploaded
+## Main Page
+- From the landing page, click "Search for Otters" button to navigate to this page
+- This page presents all of the already existing otter posts that other users have uploaded onto the site.
+- This page is accessible to all users regardless of registered or unregistered.
 
-**2nd Core Feature**
-Create new comment
-- As a logged in verified account, I want to be able to create a comment on any uploaded post
-    - When I'm on the `/posts/:id` page:
-        - I would like to be able to leave a comment for that post regarging my feedback/opinions
+## Create Post
+- As a logged-in user, create a post on Ottr
+- Each new post requires a post name, description, and image file (depending on what you try to upload, the file type may not be supported!)
 
-Viewing all comments on a post
-- As a logged in or logged out user, I want to be able to view all of the comments left on a specific post
-    - When I'm on the `/posts/:id` page:
-        - I can view all of the most recent reviews left on a post
+## Update/Edit Posts
+- If user created a post, they may update or delete the post directly through the post UI (user-interface)
+- When updating, the user is sent to a post almost identical to the create post page and has flexibility on what they want to change (post name, description, image file)
+- When deleting a post, the user is prompted if they are sure they want to permanently delete their post
 
-Updating a comment for a post
-- As a logged in user that has left a comment for a specific post, I want to be able to edit my comment by clicking an edit button
-    - When I'm on the `/posts/:id` pages:
-        - I can click "edit" to make permanent changes to the comments I have posted.
-
-Deleting a comment for a post
-- As a logged in user that has left a comment for a specific post, I want to be able to delete my comment by clicking a delete button
-    - When I'm on the `/posts/:id` pages:
-        - I can click "delete" to make permanent changes to the comments I have posted.
+## Leave Comment
+- Registered users only, can leave comments on any existing post. There is no limit to how many comments they can post, but there are character limits set in place
+- Newly submitted comments dynamically appear on the current page
+- Users may choose to modify or delete their comment conveniently through the post UI
+- When deleting a comment, the user is prompted if they are sure they want to permanently delete their comment
