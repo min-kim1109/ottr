@@ -19,14 +19,51 @@ This is my fullstack project, Ottr, a Flickr webapp clone created to allow users
 
 
 
-## Site Preview
+**Site Preview**
 ![flickr-database-schema]
 
 [flickr-database-schema]: https://i.imgur.com/UjVCVUQ.jpeg
 
 
 
+## What can you do on Ottr?
+
+**1. Check out users pictures and comments of otter posts** <br>
+
+- Navigate through the webapp as either an unregistered or registered user.
+- Register an account on the site or log in as the demo user for easy access
+- View all otter posts and related comments that other users have left
+
+**2. Benefits of being a registered user!** <br>
+
+- Create your own otter post to share with the rest of the community
+- Edit or delete the posts you have created
+- Other users can leave comments on your post
+- You may post comments on other people's posts
+
+## How to download Ottr on your local computer
+
+1. In the root folder:
+
+- create an .env file
+- copy over .envexample content into the new .env file
+- run these commands in terminal
+
+  ```bash
+  pipenv requirements > requirements.txt
+  pipenv install
+  pipenv shell
+  flask db upgrade
+  flask seed all
+  flask run
+  ```
+
+2. cd into the root folder and then run `pipenv run flask run` to start the back-end
+
+3. cd into the react-app folder and then run `npm start` to start the front-end
+
 ## User Stories
+
 **1st Core Feature**
 Create new post
 - As a logged in verified account, I want to be able to create a new post on my site.
