@@ -1,5 +1,17 @@
-# Capstone Full Stack Project (Ottr)
-This is my fullstack project, Ottr, a Flickr webapp clone created to allow users to upload and post pictures of various otters in nature.
+# Full Stack Project (Ottr)
+This is my fullstack project, Ottr, a Flickr webapp clone created to allow users to upload and post pictures of various otters in nature. Explore the plethora of diverse otters that have been captured for your viewing pleasure. Register on the site to enrich your user experience by uploading, commenting, and editing your own otter posts! Enjoy your time!
+
+**Click on the link below to visit the live site!**
+[![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)
+](https://ottr.onrender.com/)
+
+**Technologies and Languages Used:**
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Python](https://img.shields.io/badge/-Python-blue?style=flat-square&logo=python)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![Redux](https://img.shields.io/badge/-Redux-black?style=for-the-badge&logo=redux&logoColor=white)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
 
 ## Database Schema Design
 ![flickr-database-schema]
