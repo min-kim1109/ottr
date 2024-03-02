@@ -17,20 +17,14 @@ This is my fullstack project, Ottr, a Flickr webapp clone created to allow users
 ![PostgreSQL](https://img.shields.io/badge/postgresql-%23336791.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![AWS](https://img.shields.io/badge/aws-%23232F3E.svg?style=for-the-badge&logo=amazonaws&logoColor=white)
 
-## Database Schema Design
+
+
+## Site Preview
 ![flickr-database-schema]
 
-[flickr-database-schema]: https://i.imgur.com/kxu0RIG.png
-
-## Wireframe Design
-![wireframe-design1]
-![wireframe-design2]
-![wireframe-design3]
+[flickr-database-schema]: https://i.imgur.com/UjVCVUQ.jpeg
 
 
-[wireframe-design1]: https://i.imgur.com/CGj3xdo.png
-[wireframe-design2]: https://i.imgur.com/LWl7S2d.png
-[wireframe-design3]: https://i.imgur.com/6zCL9lN.png
 
 ## User Stories
 **1st Core Feature**
