@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom'; // Removed useLocation as it's no longer directly used
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from "../LoginFormModal";
@@ -15,10 +15,12 @@ function CreatePostLink() {
 }
 
 function Navigation({ isLoaded }) {
-	const location = useLocation(); // Hook to get the current route
+	const history = useHistory();
+	const location = useLocation();
 	const sessionUser = useSelector((state) => state.session.user);
 	const [showLoginModal, setShowLoginModal] = useState(false);
 	const [showSignupModal, setShowSignupModal] = useState(false);
+	const [searchQuery, setSearchQuery] = useState(""); // Added state to hold search query
 
 	useEffect(() => {
 		if (sessionUser) {
@@ -30,15 +32,40 @@ function Navigation({ isLoaded }) {
 	const closeLoginModal = () => setShowLoginModal(false);
 	const closeSignupModal = () => setShowSignupModal(false);
 
-	const isTransparent = !(location.pathname === '/posts' || location.pathname.startsWith('/post'));
+	// Updated to only handle search query state
+	const handleSearchChange = (e) => {
+		setSearchQuery(e.target.value);
+	};
+
+	// New function to handle search when Enter is pressed
+	const handleSearchKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			// Redirects to Show All Posts page with search query
+			history.push(`/posts?search=${encodeURIComponent(searchQuery)}`);
+			setSearchQuery('');
+		}
+	};
+
+	const isTransparent = location.pathname === '/';
+	const isSpecificPage = location.pathname === '/posts' || location.pathname.startsWith('/post');
+
 
 	return (
-		<div className={`nav-container ${isTransparent ? '' : 'opaque'}`}>
+		<div className={`nav-container ${isTransparent ? 'opaque' : ''} ${isSpecificPage ? '' : 'opaque'}`}>
 			<div className="ottr-button-container">
 				<NavLink exact to="/" className="ottr-link">
 					Ottr
 					<img id="otter-image" src="https://i.imgur.com/lFonrwq.gif" alt="animated-otter"></img>
 				</NavLink>
+			</div>
+			<div className="search-container">
+				<input
+					type="text"
+					placeholder="Search posts..."
+					value={searchQuery}
+					onChange={handleSearchChange}
+					onKeyPress={handleSearchKeyPress}
+				/>
 			</div>
 			<div className="auth-buttons-container">
 				{isLoaded && !sessionUser && (
@@ -71,9 +98,8 @@ function Navigation({ isLoaded }) {
 						<SignupFormModal closeModal={closeSignupModal} />
 					</div>
 				</div>
-			)
-			}
-		</div >
+			)}
+		</div>
 	);
 }
 

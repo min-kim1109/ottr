@@ -6,7 +6,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.95);
   z-index: 10;
   padding: 10px 20px;
   box-sizing: border-box;
@@ -14,7 +14,7 @@
 }
 
 .nav-container.opaque {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .auth-buttons-container {
@@ -62,66 +62,12 @@
 
 }
 
-/* .modal input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.modal input[type="email"] {
-
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-
-}
-
-
-.modal input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.modal input[type="password"] {
-  width: 90%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-} */
-
-
-/* .modal button[type="submit"] {
-  width: 75%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #0063dc;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: -10px;
-} */
-
 .modal h1 {
   text-align: center;
   margin-bottom: 20px;
   color: black;
 
 }
-
-/* .modal label {
-  display: block;
-  margin-bottom: 5px;
-
-} */
 
 .modal .checkbox-container {
   margin-bottom: 20px;
@@ -150,7 +96,6 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 200px;
-  /* Adjust as needed */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   list-style: none;
   padding: 0;
@@ -190,8 +135,6 @@
   cursor: pointer;
   transition: all 0.3s ease;
   outline: none;
-
-  /* The gradient background */
   background: none;
 }
 
@@ -247,5 +190,44 @@
 
 .profile-button .fas.fa-user-circle {
   font-size: 22px;
-  /* Adjust the size as needed */
+}
+
+.search-container {
+  position: relative;
+  width: 60%;
+  /* Adjust width as necessary */
+  margin: 0 auto;
+  /* Centers the search container */
+}
+
+.search-container input[type="text"] {
+  width: 100%;
+  padding: 10px 15px;
+  padding-left: 40px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #333;
+  outline: none;
+}
+
+.search-container input[type="text"]::placeholder {
+  color: #666;
+}
+
+.search-container input[type="text"]:focus {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.search-container::before {
+  content: "\1F50D";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-size: 20px;
+  pointer-events: none;
 }
