@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import Modal from '../FooterModal/Modal'; // Ensure this path is correct for your project
+import { useLocation } from 'react-router-dom';
+import Modal from '../FooterModal/Modal';
 import './Footer.css';
 
 function Footer() {
     const [modalContent, setModalContent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const location = useLocation();
 
-    // Define the getModalContent function
+
+
     function getModalContent(key) {
         switch (key) {
             case 'About Ottr':
